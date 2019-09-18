@@ -31,5 +31,8 @@ This is for Ubuntu-like distro's
 10) curl -sSL http://bit.ly/2ysbOFE | bash -s
     - export PATH=$HOME/bin:$PATH
 
+OPTIONAL
+11) https://docs.docker.com/compose/install/
+
 ## My Own Notes
 [Link to Markup for README's](https://guides.github.com/features/mastering-markdown/)
