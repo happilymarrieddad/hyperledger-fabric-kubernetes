@@ -1,6 +1,15 @@
 Hyperledger Fabric on Kubernetes
 ===================================
 
+
+## S2-L1 - BYFN Example
+cd fabric-samples/first-network
+NOTE - If you have a problem with the generation of the certs use the binaries provided in the repo
+./byfn.sh generate
+./byfn.sh up
+./byfn.sh down
+
+
 ## S1-L1 - Introduction
 [Link to Hyperledgers Main Site](https://www.hyperledger.org/projects/fabric)
 [Link to Hyperledgers Getting Started Page](https://hyperledger-fabric.readthedocs.io/en/release-1.4/getting_started.html)
