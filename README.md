@@ -3,11 +3,11 @@ Hyperledger Fabric on Kubernetes
 
 
 ## S2-L1 - BYFN Example
-cd fabric-samples/first-network
+1) cd fabric-samples/first-network
 NOTE - If you have a problem with the generation of the certs use the binaries provided in the repo
-./byfn.sh generate
-./byfn.sh up
-./byfn.sh down
+2) ./byfn.sh generate
+3) ./byfn.sh up
+4) ./byfn.sh down
 
 
 ## S1-L1 - Introduction
@@ -26,6 +26,7 @@ This is for Ubuntu-like distro's
 3) sudo apt install build-essential zsh curl make emacs htop -y
 4) https://github.com/robbyrussell/oh-my-zsh
 5) https://golang.org/dl/
+    - tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
 6) sudo apt install nodejs
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install --yes nodejs
 7) http://docs.docker.com/install/linux/docker-ce/ubuntu/
