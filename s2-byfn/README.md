@@ -12,42 +12,64 @@ configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts
 
 
 
-## Commands for the CLI
-
-peer channel create \
-    -o orderer.example.com:7050 \
-    -c mychannel \
-    -f ./channel-artifacts/channel.tx \
-    --tls \
-    --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
-
-
-peer channel join -b mychannel.block
-
-
-peer channel update \
-    -o orderer.example.com:7050 \
-    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
-    -f channel-artifacts/Org1MSPanchors.tx \
-    -c mychannel
-
-peer channel update \
-    -o orderer.example.com:7050 \
-    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
-    -f channel-artifacts/Org2MSPanchors.tx \
-    -c mychannel
 
 
 
 
+## Commands to start a network
+docker exec cli-peer0.org1 bash -c 'peer channel create -c mychannel -f ./channels/channel.tx -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem'
 
-## Installing Chaincode
 
-peer chaincode install -n mycc -v 0 -p github.com/chaincode/chaincode_example02/go
 
-peer chaincode instantiate -o orderer.example.com:7050 \
-    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem \
-    -C mychannel -n mycc -v 0 -c '{"Args":["init","a","100","b","100"]}'
+docker exec cli-peer0.org1 bash -c 'peer channel join -b mychannel.block'
+docker exec cli-peer1.org1 bash -c 'peer channel join -b mychannel.block'
+docker exec cli-peer0.org2 bash -c 'peer channel join -b mychannel.block'
+docker exec cli-peer1.org2 bash -c 'peer channel join -b mychannel.block'
+
+
+docker exec cli-peer0.org1 bash -c 'peer channel update -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem -c mychannel -f ./channels/Org1MSPanchors.tx'
+docker exec cli-peer0.org2 bash -c 'peer channel update -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem -c mychannel -f ./channels/Org2MSPanchors.tx'
+
+
+
+## Install chaincode and run it
+remove the bridge command
+remove tty
+add command for sleep for infinity
+
+
+
+
+docker exec cli-peer0.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer1.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer0.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer1.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode instantiate -C mychannel -n rawresources -v 0 -c '{\"Args\":[]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+docker exec -it cli-peer0.org1 bash
+peer chaincode invoke -C mychannel -n rawresources -c '{"Args":["store","{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}'
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode invoke -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -58,7 +80,3 @@ peer channel fetch newest \
     --tls  \
     --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 
-
-
-
-    -o orderer.example.com --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
