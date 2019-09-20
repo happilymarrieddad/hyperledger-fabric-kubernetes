@@ -30,7 +30,7 @@ func (c *Chaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Success(nil)
 }
 
-func (c *Chaincode) Invoice(stub shim.ChaincodeStubInterface) pb.Response {
+func (c *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 	function, args := stub.GetFunctionAndParameters()
 

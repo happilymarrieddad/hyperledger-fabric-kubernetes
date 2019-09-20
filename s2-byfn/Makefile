@@ -4,4 +4,5 @@ install:
 		github.com/hyperledger/fabric/protos/peer
 
 clean:
-	sudo rm -rf state/
+	sudo rm -rf state
+	sudo rm -rf chaincode/github.com

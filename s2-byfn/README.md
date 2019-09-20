@@ -32,8 +32,29 @@ docker exec cli-peer0.org2 bash -c 'peer channel update -o orderer.example.com:7
 
 
 
+## Install chaincode and run it
+remove the bridge command
+remove tty
+add command for sleep for infinity
 
 
+
+
+docker exec cli-peer0.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer1.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer0.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+docker exec cli-peer1.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode instantiate -C mychannel -n rawresources -v 0 -c '{\"Args\":[]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+docker exec -it cli-peer0.org1 bash
+peer chaincode invoke -C mychannel -n rawresources -c '{"Args":["store","{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}'
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode invoke -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
 
 
 
