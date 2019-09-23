@@ -51,7 +51,7 @@ docker exec cli-peer0.org1 bash -c "peer chaincode instantiate -C mychannel -n r
 
 
 docker exec -it cli-peer0.org1 bash
-peer chaincode invoke -C mychannel -n rawresources -c '{"Args":["store","{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}'
+peer chaincode invoke -C mychannel -n rawresources -c '{"Args":["store","{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem
 
 
 docker exec cli-peer0.org1 bash -c "peer chaincode invoke -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
