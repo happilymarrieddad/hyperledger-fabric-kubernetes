@@ -7,6 +7,7 @@
 
             v-toolbar-items
                 v-btn(text to="/") Home
+                v-btn(text to="/create") Create
 
         
         v-app

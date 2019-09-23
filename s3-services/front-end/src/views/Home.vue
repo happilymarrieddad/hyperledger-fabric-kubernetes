@@ -11,7 +11,7 @@
                     span {{ item.weight }} lbs.
 
                 template(v-slot:item.id="{ item }")
-                    span {{ item.id }}
+                    router-link(:to="'/update/' + item.id") Update
 
 </template>
 
