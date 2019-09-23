@@ -45,6 +45,19 @@ func (c *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 }
 
+func (c *Chaincode) Query(stub shim.ChaincodeStubInterface) pb.Response {
+
+	function, args := stub.GetFunctionAndParameters()
+
+	switch function {
+	case "index":
+		return Index(stub, args)
+	default:
+		return shim.Error("Available Functions: Index")
+	}
+
+}
+
 func main() {
 	if err := shim.Start(new(Chaincode)); err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)

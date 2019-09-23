@@ -63,16 +63,6 @@ docker exec cli-peer0.org1 bash -c "peer chaincode invoke -C mychannel -n rawres
 
 
 
-
-
-
-
-
-
-
-
-
-
 ## In order to grab an exising block if you lose it then use this command
 peer channel fetch newest \
     -c mychannel \
