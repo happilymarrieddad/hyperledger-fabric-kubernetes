@@ -62,6 +62,38 @@ docker exec cli-peer0.org1 bash -c "peer chaincode invoke -C mychannel -n rawres
 
 
 
+## Update the chaincode and add query
+
+1) Copy the data to the cli containers
+2) Install the new chaincode
+3) Update the chaincode definition
+4) Test it to make sure it works
+
+
+
+docker cp ./chaincode/rawresources cli-peer0.org1:/opt/gopath/src/rawresources
+
+
+
+
+docker exec cli-peer0.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 1'
+docker exec cli-peer1.org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 1'
+docker exec cli-peer0.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 1'
+docker exec cli-peer1.org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 1'
+
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode upgrade -C mychannel -n rawresources -v 1 -c '{\"Args\":[]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+
+
+
+docker exec cli-peer0.org1 bash -c "peer chaincode query -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+
+
 
 ## In order to grab an exising block if you lose it then use this command
 peer channel fetch newest \

@@ -40,7 +40,7 @@ func (c *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	case "index":
 		return Index(stub, args)
 	default:
-		return shim.Error("Available Functions: Store")
+		return shim.Error("Available Functions: Store, Index")
 	}
 
 }
