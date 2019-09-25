@@ -51,6 +51,11 @@ export default new Vuex.Store({
             Object.assign(state.raw_resources[index], data)
 
             return Promise.resolve()
+        },
+        async destroy({ state }, id) {
+            state.raw_resources = state.raw_resources.filter(el => +el.id !== +id)
+
+            return Promise.resolve();
         }
     }
 })

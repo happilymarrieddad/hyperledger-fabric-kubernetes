@@ -90,15 +90,30 @@ docker exec cli-peer0.org1 bash -c "peer chaincode upgrade -C mychannel -n rawre
 
 
 docker exec cli-peer0.org1 bash -c "peer chaincode query -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+docker exec cli-peer1.org1 bash -c "peer chaincode query -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+docker exec cli-peer0.org2 bash -c "peer chaincode query -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+docker exec cli-peer1.org2 bash -c "peer chaincode query -C mychannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+
+
+
+
 
 
 
 
 
 ## In order to grab an exising block if you lose it then use this command
-peer channel fetch newest \
+peer channel fetch 0 \
     -c mychannel \
     -o orderer.example.com \
     --tls  \
     --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+
+docker exec cli-peer0.org1 bash -c "peer channel fetch 0 \
+    -c mychannel \
+    -o orderer.example.com \
+    --tls  \
+    --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"
 

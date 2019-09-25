@@ -12,6 +12,7 @@
 
                 template(v-slot:item.id="{ item }")
                     router-link(:to="'/update/' + item.id") Update
+                    a(@click="destroy(item.id)") Destroy
 
 </template>
 
@@ -33,6 +34,13 @@ export default {
     ...mapState({
       raw_resources: state => state.raw_resources
     })
+  },
+  methods: {
+    async destroy(id) {
+      const vm = this;
+
+      await vm.$store.dispatch("destroy", id);
+    }
   }
 };
 </script>
