@@ -97,6 +97,8 @@ docker exec cli-peer1.org2 bash -c "peer chaincode query -C mychannel -n rawreso
 
 
 
+docker exec -it cli-peer0.org1 bash
+peer chaincode invoke -C mychannel -n rawresources -c '{"Args":["store","{\"id\":2,\"name\":\"Copper Ore\",\"weight\":42000}"]}' -o orderer.example.com:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/tlsca.example.com-cert.pem
 
 
 
