@@ -25,6 +25,8 @@ type User struct {
 }
 
 func NewUser(firstName string, lastName string, email string, password string) (user *User, err error) {
+	user = new(User)
+
 	id, err := genUUID()
 	if err != nil {
 		return
