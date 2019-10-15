@@ -7,7 +7,7 @@ import (
 func main() {
 	s := server.NewServer()
 
-	if err := s.Init(8080); err != nil {
+	if err := s.Init(3000); err != nil {
 		panic(err)
 	}
 

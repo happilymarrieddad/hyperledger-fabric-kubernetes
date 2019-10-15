@@ -40,6 +40,7 @@ func GetRoutes() map[string]models.SubRoutePackage {
 				models.Route{Name: "RawResourcesReplace", Method: "PUT", Pattern: "/rawresources/{id}", HandlerFunc: RawResourcesHandler.Update()},
 				models.Route{Name: "RawResourcesUpdate", Method: "PATCH", Pattern: "/rawresources/{id}", HandlerFunc: RawResourcesHandler.Update()},
 				models.Route{Name: "RawResourcesDestroy", Method: "DELETE", Pattern: "/rawresources/{id}", HandlerFunc: RawResourcesHandler.Destroy()},
+				models.Route{Name: "RawResourcesShow", Method: "GET", Pattern: "/rawresources/{id}", HandlerFunc: RawResourcesHandler.Show()},
 			},
 		},
 	}

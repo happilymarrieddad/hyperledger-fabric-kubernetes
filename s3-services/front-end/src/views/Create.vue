@@ -36,7 +36,7 @@ export default {
     return {
       name: "",
       weight: 42000,
-      type_id: 1
+      type_id: 0
     };
   },
   computed: {
@@ -53,6 +53,8 @@ export default {
         weight: vm.weight,
         type_id: vm.type_id
       });
+
+      await vm.$store.dispatch("fetchRawResource");
 
       vm.$router.push({ path: "/" });
     }

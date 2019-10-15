@@ -40,7 +40,11 @@ export default {
       const vm = this;
 
       await vm.$store.dispatch("destroy", id);
+      await vm.$store.dispatch("fetchRawResource");
     }
+  },
+  mounted() {
+    this.$store.dispatch("fetchRawResource");
   }
 };
 </script>

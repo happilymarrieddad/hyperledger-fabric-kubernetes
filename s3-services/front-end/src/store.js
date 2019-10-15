@@ -1,59 +1,88 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as moment from 'moment';
-import { get } from 'http';
+
+const baseURL = `${process.env.VUE_APP_apiurl}/v1`
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        raw_resources: [
-            {
-                id: 1,
-                name: 'Iron Ore',
-                type_id: 1,
-                weight: 42000,
-                arrival_time: moment().format('MM/DD/YYYY'),
-                timestamp: moment().format('MM/DD/YYYY')
-            },
-            {
-                id: 2,
-                name: 'Copper Ore',
-                type_id: 2,
-                weight: 42000,
-                arrival_time: moment().format('MM/DD/YYYY'),
-                timestamp: moment().format('MM/DD/YYYY')
-            }
-        ],
-        raw_resource_types: [
-            { id: 1, name: 'Iron' },
-            { id: 2, name: 'Copper' },
-            { id: 3, name: 'Platinum' }
-        ]
+        raw_resources: [],
+        raw_resource_types: []
     },
     mutations: {
 
     },
     actions: {
-        async create({ state }, new_item) {
-            new_item.timestamp = moment().format('MM/DD/YYYY')
-            new_item.id = +state.raw_resources[state.raw_resources.length - 1].id + 1
+        async fetchRawResourceTypes({ state }) {
 
-            state.raw_resources.push(new_item);
+            const response = await fetch(`${baseURL}/rawresourcetypes`)
+            const rawResourceTypes = await response.json()
 
-            return Promise.resolve();
+            state.raw_resource_types = [{ id: 0, name: "Please Select Type" }].concat(rawResourceTypes || [])
+
+            return null;
+        },
+        async fetchRawResource({ state }) {
+
+            const response = await fetch(`${baseURL}/rawresources`)
+            let rawResources = await response.json()
+
+            rawResources = rawResources.map(el => {
+                el.arrival_time = moment(el.arrival_time || moment()).format('MM/DD/YYYY')
+                el.timestamp = moment(el.timestamp || moment()).format('MM/DD/YYYY')
+
+                return el;
+            })
+
+            state.raw_resources = rawResources || []
+
+            return null;
         },
         async get({ state }, id) {
-            return state.raw_resources.find(el => +el.id === +id);
-        },
-        async update({ state }, { id, data }) {
-            const index = state.raw_resources.findIndex(el => +el.id === +id);
-            Object.assign(state.raw_resources[index], data)
 
-            return Promise.resolve()
+            const response = await fetch(`${baseURL}/rawresources/${id}`)
+            let rawResource = await response.json()
+
+            return rawResource;
+        },
+        async create({ state }, new_item) {
+
+            const response = await fetch(`${baseURL}/rawresources`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(new_item)
+            })
+
+            let newRawResource = response.json()
+
+            return newRawResource
+        },
+
+        async update({ state }, { id, data }) {
+
+            data.weight = +data.weight
+
+            const response = await fetch(`${baseURL}/rawresources/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            let newRawResource = response.json()
+
+            return newRawResource
         },
         async destroy({ state }, id) {
-            state.raw_resources = state.raw_resources.filter(el => +el.id !== +id)
+
+            const response = await fetch(`${baseURL}/rawresources/${id}`, {
+                method: 'DELETE'
+            })
 
             return Promise.resolve();
         }
