@@ -1,0 +1,30 @@
+version: "2"
+
+networks:
+  default.svc.cluster.local:
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./s3-services/back-end
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - default.svc.cluster.local
+
+  web:
+    container_name: web
+    build:
+      context: ./s3-services/front-end
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8080:8080
+    volumes:
+      - /app/node_modules
+      - ./s3-services/front-end:/app
+    networks:
+      - default.svc.cluster.local
+    depends_on:
+      - api
