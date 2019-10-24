@@ -17,6 +17,7 @@ docker exec cli-peer0-org1 bash -c 'peer channel create -c mainchannel -f ./chan
 
 
 docker exec cli-peer0-org1 bash -c 'peer channel join -b mainchannel.block'
+docker exec cli-peer0-org1 bash -c 'cp mainchannel.block ./channels/mainchannel.block'
 docker exec cli-peer1-org1 bash -c 'peer channel join -b ./channels/mainchannel.block'
 docker exec cli-peer0-org2 bash -c 'peer channel join -b ./channels/mainchannel.block'
 docker exec cli-peer1-org2 bash -c 'peer channel join -b ./channels/mainchannel.block'
@@ -38,4 +39,4 @@ docker exec -it cli-peer0-org1 bash
 peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem
 
 
-docker exec cli-peer0-org1 bash -c "peer chaincode invoke -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem"
+docker exec cli-peer0-org1 bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem"
