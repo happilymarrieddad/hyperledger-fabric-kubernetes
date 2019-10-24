@@ -39,8 +39,10 @@ func (c *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return Store(stub, args)
 	case "index":
 		return Index(stub, args)
+	case "queryString":
+		return QueryString(stub, args)
 	default:
-		return shim.Error("Available Functions: Store, Index")
+		return shim.Error("Available Functions: Store, Index, QueryString")
 	}
 
 }
@@ -52,8 +54,10 @@ func (c *Chaincode) Query(stub shim.ChaincodeStubInterface) pb.Response {
 	switch function {
 	case "index":
 		return Index(stub, args)
+	case "queryString":
+		return QueryString(stub, args)
 	default:
-		return shim.Error("Available Functions: Index")
+		return shim.Error("Available Functions: Index, QueryString")
 	}
 
 }
