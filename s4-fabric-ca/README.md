@@ -27,7 +27,7 @@ docker exec cli-peer0-org2 bash -c 'peer channel update -o orderer0-service:7050
 
 sleep 15
 
-docker exec cli-peer0-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 1'
+docker exec cli-peer0-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
 docker exec cli-peer1-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
 docker exec cli-peer0-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
 docker exec cli-peer1-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
@@ -39,7 +39,7 @@ docker exec -it cli-peer0-org1 bash
 peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem
 
 
-docker exec cli-peer0-org1 bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"0\",\"1000000\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem"
+docker exec cli-peer0-org1 bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem"
 
 # Updating Chaincode
 
@@ -60,3 +60,18 @@ peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"i
 peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem
 
 https://docs.couchdb.org/en/2.2.0/api/database/find.html#find-expressions
+
+
+# Creating indexes for our chaincode
+
+
+docker exec cli-peer0-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec cli-peer1-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec cli-peer0-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec cli-peer1-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+
+docker exec cli-peer0-org1 bash -c "peer chaincode upgrade -C mainchannel -n rawresources -v 3 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem"
+
+docker exec -it cli-peer0-org1 bash
+
+peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlsintermediatecerts/ca-intermediate-7054.pem

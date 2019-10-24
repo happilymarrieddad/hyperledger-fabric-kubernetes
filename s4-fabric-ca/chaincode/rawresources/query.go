@@ -7,7 +7,7 @@ import (
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
-func QueryString(stub shim.ChaincodeStubInterface, args []strings) pb.Response {
+func QueryString(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var items []RawResource
 
 	if len(args) == 0 {
