@@ -101,11 +101,25 @@ services:
     networks:
       - default.svc.cluster.local
 
+  peer0-org1-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer0-org1-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer0-org1-couchdb:/opt/couchdb/data
+    ports:
+      - 5984:5984
+    networks:
+      - default.svc.cluster.local
   peer0-org1-service:
     image: hyperledger/fabric-peer:1.4.3
     container_name: peer0-org1-service
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     restart: always
+    command: bash /scripts/start-peer.sh
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -124,12 +138,17 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-org1-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
     volumes:
       - /var/run/:/host/var/run
       - ./crypto-config/peerOrganizations/org1.default.svc.cluster.local/peers/peer0-org1.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/org1.default.svc.cluster.local/peers/peer0-org1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
       - ./state/peer0-org1:/var/hyperledger/production
       - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
     ports:
       - 7051:7051
     depends_on:
@@ -139,11 +158,25 @@ services:
     networks:
       - default.svc.cluster.local
 
+  peer1-org1-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer1-org1-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer1-org1-couchdb:/opt/couchdb/data
+    ports:
+      - 6984:5984
+    networks:
+      - default.svc.cluster.local
   peer1-org1-service:
     image: hyperledger/fabric-peer:1.4.3
     container_name: peer1-org1-service
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     restart: always
+    command: bash /scripts/start-peer.sh
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -162,12 +195,17 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-org1-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
     volumes:
       - /var/run/:/host/var/run
       - ./crypto-config/peerOrganizations/org1.default.svc.cluster.local/peers/peer1-org1.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/org1.default.svc.cluster.local/peers/peer1-org1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
       - ./state/peer1-org1:/var/hyperledger/production
       - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
     ports:
       - 8051:7051
     depends_on:
@@ -177,11 +215,25 @@ services:
     networks:
       - default.svc.cluster.local
 
+  peer0-org2-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer0-org2-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer0-org2-couchdb:/opt/couchdb/data
+    ports:
+      - 7984:5984
+    networks:
+      - default.svc.cluster.local
   peer0-org2-service:
     image: hyperledger/fabric-peer:1.4.3
     container_name: peer0-org2-service
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     restart: always
+    command: bash /scripts/start-peer.sh
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -200,12 +252,17 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-org2-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
     volumes:
       - /var/run/:/host/var/run
       - ./crypto-config/peerOrganizations/org2.default.svc.cluster.local/peers/peer0-org2.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/org2.default.svc.cluster.local/peers/peer0-org2.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
       - ./state/peer0-org2:/var/hyperledger/production
       - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
     ports:
       - 9051:7051
     depends_on:
@@ -215,11 +272,25 @@ services:
     networks:
       - default.svc.cluster.local
 
+  peer1-org2-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer1-org2-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer1-org2-couchdb:/opt/couchdb/data
+    ports:
+      - 8984:5984
+    networks:
+      - default.svc.cluster.local
   peer1-org2-service:
     image: hyperledger/fabric-peer:1.4.3
     container_name: peer1-org2-service
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     restart: always
+    command: bash /scripts/start-peer.sh
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -238,12 +309,17 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-org2-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
     volumes:
       - /var/run/:/host/var/run
       - ./crypto-config/peerOrganizations/org2.default.svc.cluster.local/peers/peer1-org2.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
       - ./crypto-config/peerOrganizations/org2.default.svc.cluster.local/peers/peer1-org2.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
       - ./state/peer1-org2:/var/hyperledger/production
       - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
     ports:
       - 10051:7051
     depends_on:
