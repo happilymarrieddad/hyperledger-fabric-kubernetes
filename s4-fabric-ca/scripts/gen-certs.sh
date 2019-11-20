@@ -3,7 +3,7 @@
 # Allows for the file to be run anywhere
 export SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-ENROLLURL=ca-intermediate:7054
+ENROLLURL=ca-root:7054
 HOME_DIR=/etc/hyperledger/fabric-ca-server/fabric-ca-files
 DOMAIN=default.svc.cluster.local
 
@@ -118,7 +118,7 @@ for ((i = 0; i < 3; i++)); do
 
     mkdir -p $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN
     cp -rf $HOME_DIR/$DOMAIN/$NAME/* $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN
-    cp $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN/msp/tlsintermediatecerts/ca-intermediate-7054.pem $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN/tls/ca.crt
+    cp $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN/msp/tlscacerts/ca-root-7054.pem $CONFIGPATH/ordererOrganizations/$DOMAIN/orderers/$NAME.$DOMAIN/tls/ca.crt
 
 done
 
@@ -139,7 +139,7 @@ for ((j = 1; j < 3; j++)); do
         mkdir -p $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN
 
         cp -rf $HOME_DIR/$ORG.$DOMAIN/$NAME/* $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN
-        cp $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN/msp/tlsintermediatecerts/ca-intermediate-7054.pem $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN/tls/ca.crt
+        cp $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN/msp/tlscacerts/ca-root-7054.pem $CONFIGPATH/peerOrganizations/$ORG.$DOMAIN/peers/$NAME-$ORG.$DOMAIN/tls/ca.crt
 
     done
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#date -Ins -s $(date -Ins -d '+1 hour')
+
 fabric-ca-server start \
     -b $ROOT_USERNAME:$ROOT_PASSWORD \
     --cfg.affiliations.allowremove \

@@ -1,0 +1,242 @@
+name: "default-svc-cluster-local-network"
+
+version: 1.4.3
+
+client:
+
+  organization: org1
+
+  logging:
+    level: info
+
+  cryptoconfig:
+    path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config
+
+  # Some SDKs support pluggable KV stores, the properties under "credentialStore"
+  # are implementation specific
+  credentialStore:
+    path: /tmp/default-svc-cluster-local-store
+
+    # [Optional]. Specific to the CryptoSuite implementation used by GO SDK. Software-based implementations
+    # requiring a key store. PKCS#11 based implementations does not.
+    cryptoStore:
+      path: /tmp/default-svc-cluster-local-msp
+
+   # BCCSP config for the client. Used by GO SDK.
+  BCCSP:
+    security:
+     enabled: true
+     default:
+      provider: "SW"
+     hashAlgorithm: "SHA2"
+     softVerify: true
+     level: 256
+
+  tlsCerts:
+    # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
+    systemCertPool: true
+
+#
+# [Optional]. But most apps would have this section so that channel objects can be constructed
+# based on the content below. If an app is creating channels, then it likely will not need this
+# section.
+#
+channels:
+
+  # name of the channel
+  mainchannel:
+
+    # Required. list of peers from participating orgs
+    peers:
+      peer0-org1-service:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1-org1-service:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0-org2-service:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1-org2-service:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+    policies:
+      #[Optional] options for retrieving channel configuration blocks
+      queryChannelConfig:
+        #[Optional] min number of success responses (from targets/peers)
+        minResponses: 1
+        #[Optional] channel config will be retrieved for these number of random targets
+        maxTargets: 1
+        #[Optional] retry options for query config block
+        retryOpts:
+          #[Optional] number of retry attempts
+          attempts: 5
+          #[Optional] the back off interval for the first retry attempt
+          initialBackoff: 1000ms
+          #[Optional] the maximum back off interval for any retry attempt
+          maxBackoff: 10s
+          #[Optional] he factor by which the initial back off period is exponentially incremented
+          backoffFactor: 2.0
+
+
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  org1:
+    mspid: org1
+    cryptoPath: peerOrganizations/org1/users/Admin@org1/msp
+    peers:
+      - peer0-org1-service
+      - peer1-org1-service
+  org2:
+    mspid: org2
+    cryptoPath: peerOrganizations/org2/users/Admin@org2/msp
+    peers:
+      - peer0-org2-service
+      - peer1-org2-service
+
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  _default:
+    grpcOptions:
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      allow-insecure: false
+
+  orderer0-service:
+    grpcOptions:
+      ssl-target-name-override: orderer0-service
+      grpc-max-send-message-length: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+  
+  orderer1-service:
+    grpcOptions:
+      ssl-target-name-override: orderer1-service
+      grpc-max-send-message-length: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+  
+  orderer2-service:
+    grpcOptions:
+      ssl-target-name-override: orderer2-service
+      grpc-max-send-message-length: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+
+  _default:
+    #common grpc options between all the peers
+    grpcOptions:
+      keep-alive-time: 1s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+  # org1
+  peer0-org1-service:
+    grpcOptions:
+      ssl-target-name-override: peer0-org1-service
+      grpc.http2.keepalive_time: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/peerOrganizations/org1/msp/tlscacerts/ca-root-7054.pem
+
+  peer1-org1-service:
+    grpcOptions:
+      ssl-target-name-override: peer1-org1-service
+      grpc.http2.keepalive_time: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/peerOrganizations/org1/msp/tlscacerts/ca-root-7054.pem
+
+  # org2
+  peer0-org2-service:
+    grpcOptions:
+      ssl-target-name-override: peer0-org2-service
+      grpc.http2.keepalive_time: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/peerOrganizations/org2/msp/tlscacerts/ca-root-7054.pem
+
+  peer1-org2-service:
+    grpcOptions:
+      ssl-target-name-override: peer1-org2-service
+      grpc.http2.keepalive_time: 15
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s4-fabric-ca/crypto-config/peerOrganizations/org2/msp/tlscacerts/ca-root-7054.pem
+
+
+entityMatchers:
+
+  peer:
+    - pattern: (\w*)peer0-org1-service(\w*)
+      urlSubstitutionExp: localhost:7051
+      sslTargetOverrideUrlSubstitutionExp: peer0-org1-service
+      mappedHost: peer0-org1-service
+
+    - pattern: (\w*)peer1-org1-service(\w*)
+      urlSubstitutionExp: localhost:8051
+      sslTargetOverrideUrlSubstitutionExp: peer1-org1-service
+      mappedHost: peer1-org1-service
+
+    - pattern: (\w*)peer0-org2-service(\w*)
+      urlSubstitutionExp: localhost:9051
+      sslTargetOverrideUrlSubstitutionExp: peer0-org2-service
+      mappedHost: peer0-org2-service
+
+    - pattern: (\w*)peer1-org2-service(\w*)
+      urlSubstitutionExp: localhost:10051
+      sslTargetOverrideUrlSubstitutionExp: peer1-org2-service
+      mappedHost: peer1-org2-service
+
+  orderer:
+    - pattern: (\w*)orderer0-service(\w*)
+      urlSubstitutionExp: orderer0-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer0-service
+      mappedHost: orderer0-service
+
+    - pattern: (\w*)orderer1-service(\w*)
+      urlSubstitutionExp: orderer1-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer1-service
+      mappedHost: orderer1-service
+
+    - pattern: (\w*)orderer2-service(\w*)
+      urlSubstitutionExp: orderer2-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer2-service
+      mappedHost: orderer2-service

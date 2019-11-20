@@ -17,7 +17,7 @@ Organizations:
   - &org1
     Name: org1
     ID: org1
-    MSPDir: crypto-config/peerOrganizations/org1.default.svc.cluster.local/msp
+    MSPDir: crypto-config/peerOrganizations/org1/msp
     Policies:
       Readers:
         Type: Signature
@@ -35,7 +35,7 @@ Organizations:
   - &org2
     Name: org2
     ID: org2
-    MSPDir: crypto-config/peerOrganizations/org2.default.svc.cluster.local/msp
+    MSPDir: crypto-config/peerOrganizations/org2/msp
     Policies:
       Readers:
         Type: Signature
