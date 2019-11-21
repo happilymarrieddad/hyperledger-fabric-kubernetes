@@ -1,0 +1,3 @@
+2019/11/21 03:42:27 [INFO] Configuration file location: /etc/hyperledger/fabric-ca-client/scripts/crypto-config/ordererOrganizations/default.svc.cluster.local/fabric-ca-client-config.yaml
+2019/11/21 03:42:27 [INFO] Stored root CA certificate at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/cacerts/ca-intermediate-7054.pem
+2019/11/21 03:42:27 [INFO] Stored intermediate CA certificates at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/intermediatecerts/ca-intermediate-7054.pem

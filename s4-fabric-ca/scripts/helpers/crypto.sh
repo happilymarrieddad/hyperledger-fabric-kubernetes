@@ -37,7 +37,7 @@ function setupOrg {
     # fi
     network=${args[2]}
     rootCAScheme=http
-    roothost=ca-root
+    roothost=ca-intermediate
     rootport=7054
     rootCAURL=${roothost}:${rootport}
     rootCAUser=admin

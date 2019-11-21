@@ -1,0 +1,6 @@
+2019/11/21 03:42:29 [INFO] Created a default configuration file at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/peerOrganizations/org2/users/Admin@org2/fabric-ca-client-config.yaml
+2019/11/21 03:42:29 [INFO] generating key: &{A:ecdsa S:256}
+2019/11/21 03:42:29 [INFO] encoded CSR
+2019/11/21 03:42:29 [INFO] Stored client certificate at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/signcerts/cert.pem
+2019/11/21 03:42:29 [INFO] Stored root CA certificate at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/cacerts/ca-intermediate-7054.pem
+2019/11/21 03:42:29 [INFO] Stored intermediate CA certificates at /etc/hyperledger/fabric-ca-client/scripts/crypto-config/peerOrganizations/org2/users/Admin@org2/msp/intermediatecerts/ca-intermediate-7054.pem
