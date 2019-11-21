@@ -9,9 +9,8 @@ import (
 func Index(clients *hyperledger.Clients) (rawresources *models.RawResources, err error) {
 	rawresources = new(models.RawResources)
 
-	res, err := clients.Query("org1", "rawresources", "index", [][]byte{
-		[]byte(""),
-		[]byte(""),
+	res, err := clients.Query("org1", "rawresources", "queryString", [][]byte{
+		[]byte("{\"selector\":{ \"visible\": { \"$eq\":true } }}"),
 	})
 	if err != nil {
 		return

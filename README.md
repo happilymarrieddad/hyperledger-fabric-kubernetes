@@ -1,6 +1,9 @@
 Hyperledger Fabric on Kubernetes
 ===================================
 
+## Issue fix for file watching
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
 
 ## S2-L1 - BYFN Example
 1) cd fabric-samples/first-network
