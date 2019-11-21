@@ -30,6 +30,7 @@ type RawResource struct {
 	Weight      int        `json:"weight"`
 	ArrivalTime *time.Time `json:"arrival_time"`
 	Timestamp   *time.Time `json:"timestamp"`
+	Visible bool `json:"visible"`
 }
 
 func NewRawResource(name string, typeId string, weight int, arrivalTime *time.Time) (rawResource *RawResource, err error) {

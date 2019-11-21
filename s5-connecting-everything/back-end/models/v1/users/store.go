@@ -1,6 +1,6 @@
 package users
 
-import "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models"
+import "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 
 func Store(firstName string, lastName string, email string, password string) (user *models.User, err error) {
 	user, err = models.NewUser(firstName, lastName, email, password)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/server"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/server"
 )
 
 func main() {

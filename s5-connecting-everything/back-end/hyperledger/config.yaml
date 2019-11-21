@@ -168,16 +168,16 @@ entityMatchers:
 
   orderer:
     - pattern: (\w*)orderer0-service(\w*)
-      urlSubstitutionExp: orderer0-service:7050
+      urlSubstitutionExp: localhost:7050
       sslTargetOverrideUrlSubstitutionExp: orderer0-service
       mappedHost: orderer0-service
 
     - pattern: (\w*)orderer1-service(\w*)
-      urlSubstitutionExp: orderer1-service:7050
+      urlSubstitutionExp: localhost:8050
       sslTargetOverrideUrlSubstitutionExp: orderer1-service
       mappedHost: orderer1-service
       
     - pattern: (\w*)orderer2-service(\w*)
-      urlSubstitutionExp: orderer2-service:7050
+      urlSubstitutionExp: localhost:9050
       sslTargetOverrideUrlSubstitutionExp: orderer2-service
       mappedHost: orderer2-service

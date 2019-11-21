@@ -3,7 +3,7 @@ package rawresourcetypes
 import (
 	"errors"
 
-	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 )
 
 type UpdateOpts struct {

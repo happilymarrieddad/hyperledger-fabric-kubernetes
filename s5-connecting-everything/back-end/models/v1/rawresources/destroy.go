@@ -1,21 +1,19 @@
 package rawresources
 
 import (
-	"errors"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/hyperledger"
 )
 
-func Destroy(id string) error {
-	var exists bool
-
-	for index, rawresource := range mockRawResources {
-		if rawresource.ID == id {
-			mockRawResources = append(mockRawResources[:index], mockRawResources[index+1:]...)
-			exists = true
-		}
+func Destroy(clients *hyperledger.Clients, id string) error {
+	res, err := Show(clients, id)
+	if err != nil {
+		return err
 	}
 
-	if !exists {
-		return errors.New("unable to delete rawresource because rawresource was not found")
+	res.Visible = false
+
+	if _, err = Update(clients, id, res, &UpdateOpts{ Replace: true }); err != nil {
+		return err
 	}
 
 	return nil

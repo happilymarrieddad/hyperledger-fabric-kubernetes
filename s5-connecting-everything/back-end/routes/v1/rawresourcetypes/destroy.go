@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	RawResourceTypesModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models/v1/rawresourcetypes"
+	RawResourceTypesModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models/v1/rawresourcetypes"
 )
 
 func Destroy() http.HandlerFunc {

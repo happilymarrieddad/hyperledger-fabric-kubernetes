@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	UsersModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models/v1/users"
+	UsersModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models/v1/users"
 )
 
 func Destroy() http.HandlerFunc {

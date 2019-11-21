@@ -5,12 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 
-	RawResourcesModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models/v1/rawresources"
+	RawResourcesModel "github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models/v1/rawresources"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/hyperledger"
 )
 
-func Update() http.HandlerFunc {
+func Update(clients *hyperledger.Clients) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		id := vars["id"]
@@ -28,7 +29,7 @@ func Update() http.HandlerFunc {
 			opts.Replace = true
 		}
 
-		updatedRawResource, err := RawResourcesModel.Update(id, &rawresource, &opts)
+		updatedRawResource, err := RawResourcesModel.Update(clients, id, &rawresource, &opts)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

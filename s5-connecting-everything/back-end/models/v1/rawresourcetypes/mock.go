@@ -1,7 +1,7 @@
 package rawresourcetypes
 
 import (
-	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s3-services/backend/models"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 )
 
 var mockRawResourceTypes models.RawResourceTypes

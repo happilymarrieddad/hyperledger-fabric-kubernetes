@@ -7,7 +7,7 @@ services:
   api:
     container_name: api
     build:
-      context: ./s3-services/back-end
+      context: ./s5-connecting-everything/back-end
       dockerfile: Dockerfile
     ports:
       - 3000:3000
@@ -17,13 +17,13 @@ services:
   web:
     container_name: web
     build:
-      context: ./s3-services/front-end
+      context: ./s5-connecting-everything/front-end
       dockerfile: Dockerfile.dev
     ports:
       - 8080:8080
     volumes:
       - /app/node_modules
-      - ./s3-services/front-end:/app
+      - ./s5-connecting-everything/front-end:/app
     networks:
       - default.svc.cluster.local
     depends_on:

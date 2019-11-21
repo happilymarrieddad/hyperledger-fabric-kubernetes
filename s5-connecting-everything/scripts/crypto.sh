@@ -128,15 +128,13 @@ function tlsEnroll {
     url=$2
     orgName=$3
     csrhost=$4
-    host=$(basename $homeDir),$(basename $homeDir | cut -d'.' -f1)
+    host=$(basename $homeDir),$(basename $homeDir | cut -d'.' -f1),$csrhost,${csrhost}-service,localhost
     tlsDir=$homeDir/tls
     srcMSP=$tlsDir/msp
     dstMSP=$homeDir/msp
 
     enroll $tlsDir $url $orgName \
-        --csr.hosts $csrhost \
-        --csr.hosts $host-service \
-        --csr.hosts $csrhost-service \
+        --csr.hosts $host \
         --enrollment.profile tls
 
     cp $srcMSP/signcerts/* $tlsDir/server.crt

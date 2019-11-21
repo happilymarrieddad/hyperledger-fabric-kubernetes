@@ -9,6 +9,7 @@ require (
 	github.com/hyperledger/fabric-amcl v0.0.0-20190902191507-f66264322317 // indirect
 	github.com/hyperledger/fabric-sdk-go v1.0.0-beta1 // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/spf13/viper v1.5.0 // indirect
 	github.com/sykesm/zap-logfmt v0.0.3 // indirect
 	go.uber.org/zap v1.13.0 // indirect
