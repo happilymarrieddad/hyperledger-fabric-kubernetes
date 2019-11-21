@@ -9,18 +9,19 @@ import (
 )
 
 type RawResourceType struct {
-	ID   int64  `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
 // RawResource - raw resource
 type RawResource struct {
-	ID          int64      `json:"id"`
+	ID          string     `json:"id"`
 	Name        string     `json:"name"`
-	TypeID      int        `json:"type_id"`
+	TypeID      string     `json:"type_id"`
 	Weight      float32    `json:"weight"` // in lbs'
 	ArrivalTime *time.Time `json:"arrival_time"`
 	Timestamp   *time.Time `json:"timestamp"`
+	Visible     bool       `json:"visible"`
 }
 
 type Chaincode struct {
@@ -37,12 +38,14 @@ func (c *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	switch function {
 	case "store":
 		return Store(stub, args)
+	case "update":
+		return Update(stub, args)
 	case "index":
 		return Index(stub, args)
 	case "queryString":
 		return QueryString(stub, args)
 	default:
-		return shim.Error("Available Functions: Store, Index, QueryString")
+		return shim.Error("Available Functions: Store, Update, Index, QueryString")
 	}
 
 }

@@ -1,0 +1,183 @@
+name: "default-svc-cluster-local-network"
+
+version: 1.4.3
+
+client:
+
+  organization: org1
+
+  logging:
+    level: info
+  
+  cryptoconfig:
+    path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config
+  
+  credentialStore:
+    path: /tmp/default-svc-cluster-local-store
+  
+    cryptoStore:
+      path: /tmp/default-svc-cluster-local-msp
+    
+  BCCSP:
+    security:
+      enabled: true
+      default:
+        provider: "SW"
+      hashAlgorithm: "SHA2"
+      softVerify: true
+      level: 256
+  
+  tlsCerts:
+    systemCertPool: true
+
+channels:
+
+  mainchannel:
+
+    peers:
+      peer0-org1-service:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+  
+    policies:
+      queryChannelConfig:
+        minResponses: 1
+        maxTargets: 1
+        retryOpts:
+          attempts: 5
+          initialBackoff: 1000ms
+          maxBackoff: 10s
+          backoffFactor: 2.0
+
+organizations:
+  org1:
+    mspid: org1
+    cryptopath: peerOrganizations/org1/users/Admin@org1/msp
+    peers:
+      - peer0-org1-service
+      - peer1-org1-service
+  org2:
+    mspid: org2
+    cryptopath: peerOrganizations/org2/users/Admin@org2/msp
+    peers:
+      - peer0-org2-service
+      - peer1-org2-service
+
+orderers:
+  _default:
+    grpcOptions:
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      allow-insecure: false
+  
+  orderer0-service:
+    grpcOptions:
+      ssl-target-name-override: orderer0-service
+      grpc-max-send-message-length: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+
+  
+  orderer1-service:
+    grpcOptions:
+      ssl-target-name-override: orderer1-service
+      grpc-max-send-message-length: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+
+  
+  orderer2-service:
+    grpcOptions:
+      ssl-target-name-override: orderer2-service
+      grpc-max-send-message-length: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/ordererOrganizations/default.svc.cluster.local/msp/tlscacerts/ca-root-7054.pem
+
+peers:
+
+  _default:
+    grpcOptions:
+      keep-alive-time: 1s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      allow-insecure: false
+    
+  peer0-org1-service:
+    grpcOptions:
+      ssl-target-name-override: peer0-org1-service
+      grpc.http2.keepalive_time: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/peerOrganizations/org1/msp/tlscacerts/ca-root-7054.pem
+
+  peer1-org1-service:
+    grpcOptions:
+      ssl-target-name-override: peer1-org1-service
+      grpc.http2.keepalive_time: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/peerOrganizations/org1/msp/tlscacerts/ca-root-7054.pem
+
+    
+  peer0-org2-service:
+    grpcOptions:
+      ssl-target-name-override: peer0-org2-service
+      grpc.http2.keepalive_time: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/peerOrganizations/org2/msp/tlscacerts/ca-root-7054.pem
+
+  peer1-org2-service:
+    grpcOptions:
+      ssl-target-name-override: peer1-org2-service
+      grpc.http2.keepalive_time: 15
+    
+    tlsCACerts:
+      path: /home/fusion/Projects/blockchain/hyperledger-fabric-kubernetes/s5-connecting-everything/crypto-config/peerOrganizations/org2/msp/tlscacerts/ca-root-7054.pem
+
+entityMatchers:
+
+  peer:
+    - pattern: (\w*)peer0-org1-service(\w*)
+      urlSubstitutionExp: localhost:7051
+      sslTargetOverrideUrlSubstitutionExp: peer0-org1-service
+      mappedHost: peer0-org1-service
+
+    - pattern: (\w*)peer1-org1-service(\w*)
+      urlSubstitutionExp: localhost:8051
+      sslTargetOverrideUrlSubstitutionExp: peer1-org1-service
+      mappedHost: peer1-org1-service
+
+    - pattern: (\w*)peer0-org2-service(\w*)
+      urlSubstitutionExp: localhost:9051
+      sslTargetOverrideUrlSubstitutionExp: peer0-org2-service
+      mappedHost: peer0-org2-service
+
+    - pattern: (\w*)peer1-org2-service(\w*)
+      urlSubstitutionExp: localhost:10051
+      sslTargetOverrideUrlSubstitutionExp: peer1-org2-service
+      mappedHost: peer1-org2-service
+
+  orderer:
+    - pattern: (\w*)orderer0-service(\w*)
+      urlSubstitutionExp: orderer0-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer0-service
+      mappedHost: orderer0-service
+
+    - pattern: (\w*)orderer1-service(\w*)
+      urlSubstitutionExp: orderer1-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer1-service
+      mappedHost: orderer1-service
+      
+    - pattern: (\w*)orderer2-service(\w*)
+      urlSubstitutionExp: orderer2-service:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer2-service
+      mappedHost: orderer2-service

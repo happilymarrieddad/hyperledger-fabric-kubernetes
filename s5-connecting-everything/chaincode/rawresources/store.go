@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"strconv"
 	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -19,7 +18,7 @@ func Store(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	if item.ID == 0 {
+	if len(item.ID) == 0 {
 		return shim.Error("ID is required to store raw resource")
 	}
 
@@ -33,15 +32,16 @@ func Store(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	t := time.Now()
 	item.Timestamp = &t
+	item.Visible = true
 
 	itemAsBytes, err := json.Marshal(item)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-	stub.PutState(strconv.Itoa(int(item.ID)), itemAsBytes)
+	stub.PutState(item.ID, itemAsBytes)
 
-	rawAsset, err := stub.GetState(strconv.Itoa(int(item.ID)))
+	rawAsset, err := stub.GetState(item.ID)
 	if err != nil {
 		return shim.Error(err.Error())
 	}

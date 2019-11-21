@@ -36,7 +36,7 @@ docker exec cli-peer0-org1 bash -c "peer chaincode instantiate -C mainchannel -n
 
 
 docker exec -it cli-peer0-org1 bash
-peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":1,\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"1\",\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
 
 
 docker exec cli-peer0-org1 bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
@@ -54,8 +54,8 @@ docker exec cli-peer0-org1 bash -c "peer chaincode upgrade -C mainchannel -n raw
 
 docker exec -it cli-peer0-org1 bash
 
-peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":2,\"name\":\"Iron Ore\",\"weight\":20000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
-peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":3,\"name\":\"Iron Ore\",\"weight\":10000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"2\",\"name\":\"Iron Ore\",\"weight\":20000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"3\",\"name\":\"Iron Ore\",\"weight\":10000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
 
 peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
 
@@ -75,3 +75,13 @@ docker exec cli-peer0-org1 bash -c "peer chaincode upgrade -C mainchannel -n raw
 docker exec -it cli-peer0-org1 bash
 
 peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+
+# Adding an update func
+
+
+docker exec cli-peer0-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec cli-peer1-org1 bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec cli-peer0-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec cli-peer1-org2 bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+
+docker exec cli-peer0-org1 bash -c "peer chaincode upgrade -C mainchannel -n rawresources -v 5 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
