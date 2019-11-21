@@ -1,0 +1,454 @@
+version: "2"
+
+networks:
+  default.svc.cluster.local:
+
+services:
+  orderer0-service:
+    image: hyperledger/fabric-orderer:1.4.3
+    container_name: orderer0-service
+    working_dir: /var/hyperledger/orderer
+    restart: always
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISPROFILE=OrdererGenesis
+      - ORDERER_GENERAL_SYSTEMCHANNEL=syschannel
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/data/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=orderer
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_TOPIC_REPLICATIONFACOTR=1
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer0.default.svc.cluster.local/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer0.default.svc.cluster.local/tls:/var/hyperledger/orderer/tls
+      - ./state/orderer0:/var/hyperledger/production/orderer
+      - ./orderer:/var/hyperledger/orderer/data
+    ports:
+      - 7050:7050
+    networks:
+      - default.svc.cluster.local
+  orderer1-service:
+    image: hyperledger/fabric-orderer:1.4.3
+    container_name: orderer1-service
+    working_dir: /var/hyperledger/orderer
+    restart: always
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISPROFILE=OrdererGenesis
+      - ORDERER_GENERAL_SYSTEMCHANNEL=syschannel
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/data/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=orderer
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_TOPIC_REPLICATIONFACOTR=1
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls:/var/hyperledger/orderer/tls
+      - ./state/orderer1:/var/hyperledger/production/orderer
+      - ./orderer:/var/hyperledger/orderer/data
+    ports:
+      - 8050:7050
+    networks:
+      - default.svc.cluster.local
+  orderer2-service:
+    image: hyperledger/fabric-orderer:1.4.3
+    container_name: orderer2-service
+    working_dir: /var/hyperledger/orderer
+    restart: always
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISPROFILE=OrdererGenesis
+      - ORDERER_GENERAL_SYSTEMCHANNEL=syschannel
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/data/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=orderer
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - ORDERER_KAFKA_TOPIC_REPLICATIONFACOTR=1
+      - ORDERER_KAFKA_VERBOSE=true
+      - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+    volumes:
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/tls:/var/hyperledger/orderer/tls
+      - ./state/orderer2:/var/hyperledger/production/orderer
+      - ./orderer:/var/hyperledger/orderer/data
+    ports:
+      - 9050:7050
+    networks:
+      - default.svc.cluster.local
+
+  peer0-org1-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer0-org1-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer0-org1-couchdb:/opt/couchdb/data
+    ports:
+      - 5984:5984
+    networks:
+      - default.svc.cluster.local
+  peer0-org1-service:
+    image: hyperledger/fabric-peer:1.4.3
+    container_name: peer0-org1-service
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    restart: always
+    command: bash /scripts/start-peer.sh
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_VM_DOCKER_ATTACHOUT=true
+      - CORE_PEER_ID=peer0-org1-service
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1-org1-service:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0-org1-service:7051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0-org1-service:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_LOCALMSPID=org1
+      - CORE_PEER_ENDORSER_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-org1-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
+    volumes:
+      - /var/run/:/host/var/run
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer0.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer0.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./state/peer0-org1:/var/hyperledger/production
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
+    ports:
+      - 7051:7051
+    depends_on:
+      - orderer0-service
+      - orderer1-service
+      - orderer2-service
+    networks:
+      - default.svc.cluster.local
+
+  peer1-org1-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer1-org1-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer1-org1-couchdb:/opt/couchdb/data
+    ports:
+      - 6984:5984
+    networks:
+      - default.svc.cluster.local
+  peer1-org1-service:
+    image: hyperledger/fabric-peer:1.4.3
+    container_name: peer1-org1-service
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    restart: always
+    command: bash /scripts/start-peer.sh
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_VM_DOCKER_ATTACHOUT=true
+      - CORE_PEER_ID=peer1-org1-service
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0-org1-service:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org1-service:8051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer1-org1-service:8051
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_LOCALMSPID=org1
+      - CORE_PEER_ENDORSER_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-org1-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
+    volumes:
+      - /var/run/:/host/var/run
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer1.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./state/peer1-org1:/var/hyperledger/production
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
+    ports:
+      - 8051:7051
+    depends_on:
+      - orderer0-service
+      - orderer1-service
+      - orderer2-service
+    networks:
+      - default.svc.cluster.local
+
+  peer0-org2-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer0-org2-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer0-org2-couchdb:/opt/couchdb/data
+    ports:
+      - 7984:5984
+    networks:
+      - default.svc.cluster.local
+  peer0-org2-service:
+    image: hyperledger/fabric-peer:1.4.3
+    container_name: peer0-org2-service
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    restart: always
+    command: bash /scripts/start-peer.sh
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_VM_DOCKER_ATTACHOUT=true
+      - CORE_PEER_ID=peer0-org2-service
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1-org2-service:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0-org2-service:9051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer0-org2-service:9051
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_LOCALMSPID=org2
+      - CORE_PEER_ENDORSER_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0-org2-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
+    volumes:
+      - /var/run/:/host/var/run
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer0.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer0.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./state/peer0-org2:/var/hyperledger/production
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
+    ports:
+      - 9051:7051
+    depends_on:
+      - orderer0-service
+      - orderer1-service
+      - orderer2-service
+    networks:
+      - default.svc.cluster.local
+
+  peer1-org2-couchdb:
+    image: couchdb:2.3.1
+    container_name: peer1-org2-couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=nick
+      - COUCHDB_PASSWORD=1234
+    volumes:
+      - ./state/peer1-org2-couchdb:/opt/couchdb/data
+    ports:
+      - 8984:5984
+    networks:
+      - default.svc.cluster.local
+  peer1-org2-service:
+    image: hyperledger/fabric-peer:1.4.3
+    container_name: peer1-org2-service
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    restart: always
+    command: bash /scripts/start-peer.sh
+    environment:
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_VM_DOCKER_ATTACHOUT=true
+      - CORE_PEER_ID=peer1-org2-service
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0-org2-service:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1-org2-service:10051
+      - CORE_PEER_GOSSIP_ENDPOINT=peer1-org2-service:10051
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_LOCALMSPID=org2
+      - CORE_PEER_ENDORSER_ENABLED=true
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1-org2-couchdb:5984
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=nick
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=1234
+    volumes:
+      - /var/run/:/host/var/run
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer1.default.svc.cluster.local/msp:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./state/peer1-org2:/var/hyperledger/production
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+      - ./scripts/:/scripts/
+    ports:
+      - 10051:7051
+    depends_on:
+      - orderer0-service
+      - orderer1-service
+      - orderer2-service
+    networks:
+      - default.svc.cluster.local
+
+  cli-peer0-org1:
+    container_name: cli-peer0-org1
+    image: hyperledger/fabric-tools:1.4.3
+    restart: always
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_PEER_ADDRESSAUTODETECT=true
+
+      - CORE_PEER_ID=cli-peer0-org1
+      - CORE_PEER_ADDRESS=peer0-org1-service:7051
+      - CORE_PEER_LOCALMSPID=org1
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/users/Admin@org1/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - ./orderer/:/opt/gopath/src/github.com/hyperledger/fabric/peer/orderer
+      - ./chaincode/rawresources:/opt/gopath/src/rawresources
+      - ./channels/:/opt/gopath/src/github.com/hyperledger/fabric/peer/channels
+      - ./crypto-config/peerOrganizations/org1:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer0.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+    depends_on:
+      - peer0-org1-service
+    command: sleep infinity
+    networks:
+      - default.svc.cluster.local
+
+  cli-peer1-org1:
+    container_name: cli-peer1-org1
+    image: hyperledger/fabric-tools:1.4.3
+    restart: always
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_PEER_ADDRESSAUTODETECT=true
+
+      - CORE_PEER_ID=cli-peer1-org1
+      - CORE_PEER_ADDRESS=peer1-org1-service:8051
+      - CORE_PEER_LOCALMSPID=org1
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/users/Admin@org1/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - ./orderer/:/opt/gopath/src/github.com/hyperledger/fabric/peer/orderer
+      - ./chaincode/rawresources:/opt/gopath/src/rawresources
+      - ./channels/:/opt/gopath/src/github.com/hyperledger/fabric/peer/channels
+      - ./crypto-config/peerOrganizations/org1:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org1/peers/org1-peer1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+    depends_on:
+      - peer0-org1-service
+    command: sleep infinity
+    networks:
+      - default.svc.cluster.local
+
+  cli-peer0-org2:
+    container_name: cli-peer0-org2
+    image: hyperledger/fabric-tools:1.4.3
+    restart: always
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_PEER_ADDRESSAUTODETECT=true
+
+      - CORE_PEER_ID=cli-peer0-org2
+      - CORE_PEER_ADDRESS=peer0-org2-service:9051
+      - CORE_PEER_LOCALMSPID=org2
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/users/Admin@org2/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - ./orderer/:/opt/gopath/src/github.com/hyperledger/fabric/peer/orderer
+      - ./chaincode/rawresources:/opt/gopath/src/rawresources
+      - ./channels/:/opt/gopath/src/github.com/hyperledger/fabric/peer/channels
+      - ./crypto-config/peerOrganizations/org2:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer0.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+    depends_on:
+      - peer0-org2-service
+    command: sleep infinity
+    networks:
+      - default.svc.cluster.local
+
+  cli-peer1-org2:
+    container_name: cli-peer1-org2
+    image: hyperledger/fabric-tools:1.4.3
+    restart: always
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_PEER_ADDRESSAUTODETECT=true
+
+      - CORE_PEER_ID=cli-peer1-org2
+      - CORE_PEER_ADDRESS=peer1-org2-service:10051
+      - CORE_PEER_LOCALMSPID=org2
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/users/Admin@org2/msp
+
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    volumes:
+      - ./orderer/:/opt/gopath/src/github.com/hyperledger/fabric/peer/orderer
+      - ./chaincode/rawresources:/opt/gopath/src/rawresources
+      - ./channels/:/opt/gopath/src/github.com/hyperledger/fabric/peer/channels
+      - ./crypto-config/peerOrganizations/org2:/etc/hyperledger/fabric/msp
+      - ./crypto-config/peerOrganizations/org2/peers/org2-peer1.default.svc.cluster.local/tls:/etc/hyperledger/fabric/tls
+      - ./crypto-config/ordererOrganizations/default.svc.cluster.local:/etc/hyperledger/orderers
+    depends_on:
+      - peer1-org2-service
+    command: sleep infinity
+    networks:
+      - default.svc.cluster.local

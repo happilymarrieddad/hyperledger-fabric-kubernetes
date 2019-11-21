@@ -79,7 +79,7 @@ function setupOrg {
             csrhost="${type}${nodeCount}"
         fi
         if [ "$type" == "peer" ]; then
-            nodeDir=$orgDir/${types}s/${orgName}-${type}${nodeCount}.${network}
+            nodeDir=$orgDir/${type}s/${orgName}-${type}${nodeCount}.${network}
             csrhost="${type}${nodeCount}-${orgName}"
         fi
 

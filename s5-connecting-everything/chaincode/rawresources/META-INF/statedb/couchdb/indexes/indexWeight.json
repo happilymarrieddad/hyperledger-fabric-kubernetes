@@ -1,0 +1,10 @@
+{
+    "index": {
+        "fields": [
+            "weight"
+        ]
+    },
+    "ddoc": "indexWeightDoc",
+    "name": "indexWeight",
+    "type": "json"
+}
