@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example2
+  labels: {
+    component: example2
+  }
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: example2
+  template:
+    metadata:
+      labels:
+        component: example2
+    spec:
+      volumes:
+        - name: host-mount
+          hostPath:
+            path: "/host"
+      containers:
+        - name: example2
+          image: hyperledger/fabric-tools:latest
+          command: ["sleep"]
+          args: ["infinity"]
+          volumeMounts:
+            - mountPath: /host
+              name: host-mount

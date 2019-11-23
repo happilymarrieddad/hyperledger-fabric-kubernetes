@@ -49,3 +49,5 @@ OPTIONAL
 
 ## My Own Notes
 [Link to Markup for README's](https://guides.github.com/features/mastering-markdown/)
+
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
