@@ -49,6 +49,8 @@ export default new Vuex.Store({
         },
         async create({ state }, new_item) {
 
+            new_item.weight = +new_item.weight
+
             const response = await fetch(`${baseURL}/rawresources`, {
                 method: 'POST',
                 headers: {

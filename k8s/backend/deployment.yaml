@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  labels: {
+    component: api
+  }
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      volumes:
+        - name: host-mount
+          hostPath:
+            path: "/host"
+      containers:
+        - name: api
+          image: happilymarrieddadudemy/udemy-kubernetes-back-end:latest
+          env:
+            - name: HYPERLEDGER_CONFIG_PATH
+              value: /files/config.yaml
+          volumeMounts:
+            - mountPath: /files
+              name: host-mount
+              subPath: files
+            - mountPath: /crypto-config
+              name: host-mount
+              subPath: files/scripts/crypto-config

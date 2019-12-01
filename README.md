@@ -41,7 +41,7 @@ kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | s
 kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode instantiate -C mainchannel -n rawresources -v 0 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
 
 
-kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//")
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") bash
 peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"1\",\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
 
 
