@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ca-root
+  labels: {
+    component: root,
+    type: ca
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: root
+    type: ca
+  ports:
+    - port: 7054
+      targetPort: 7054
+  

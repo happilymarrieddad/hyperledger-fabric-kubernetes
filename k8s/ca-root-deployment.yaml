@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-root-deployment
+  labels: {
+    component: root,
+    type: ca
+  }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: root
+      type: ca
+  template:
+    metadata:
+      labels:
+        component: root
+        type: ca
+    spec:
+      volumes:
+        - name: host-mount
+          hostPath:
+            path: "/host"
+      containers:
+        - name: ca-root
+          image: hyperledger/fabric-ca:1.4.3
+          command: ["sh"]
+          args: ["/scripts/start-root.sh"]
+          ports:
+            - containerPort: 7054
+          env:
+            - name: FABRIC_CA_SERVER_HOME
+              value: /etc/hyperledger/fabric-ca-client
+            - name: ROOT_HOST
+              value: ca-root
+            - name: ROOT_PORT
+              value: "7054"
+            - name: ROOT_USERNAME
+              value: admin
+            - name: ROOT_PASSWORD
+              value: adminpw
+          volumeMounts:
+            - mountPath: /scripts
+              name: host-mount
+              subPath: files/scripts
+            - mountPath: /etc/hyperledger/fabric-ca-server
+              name: host-mount
+              subPath: state/ca-root

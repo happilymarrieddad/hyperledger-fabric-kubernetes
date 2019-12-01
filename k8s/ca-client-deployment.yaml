@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-client-deployment
+  labels: {
+    component: client,
+    type: ca
+  }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: client
+      type: ca
+  template:
+    metadata:
+      labels:
+        component: client
+        type: ca
+    spec:
+      volumes:
+        - name: host-mount
+          hostPath:
+            path: "/host"
+      containers:
+        - name: ca-client
+          image: hyperledger/fabric-ca-tools:1.2.1
+          command: ["sleep"]
+          args: ["infinity"]
+          env:
+            - name: FABRIC_CA_SERVER_HOME
+              value: /etc/hyperledger/fabric-ca-client
+            - name: ROOT_HOST
+              value: ca-root
+            - name: ROOT_PORT
+              value: "7054"
+            - name: ROOT_USERNAME
+              value: admin
+            - name: ROOT_PASSWORD
+              value: adminpw
+          volumeMounts:
+            - mountPath: /scripts
+              name: host-mount
+              subPath: files/scripts
+            - mountPath: /etc/hyperledger/fabric-ca-server-root
+              name: host-mount
+              subPath: state/ca-root
+            - mountPath: /etc/hyperledger/fabric-ca-client
+              name: host-mount
+              subPath: state/ca-client
