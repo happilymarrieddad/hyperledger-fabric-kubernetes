@@ -48,7 +48,7 @@ Organizations:
         Rule: "OR('org2.admin')"
     AnchorPeers:
       - Host: peer0-org2-service
-        Port: 9051
+        Port: 7051
 
 Capabilities:
   Channel: &ChannelCapabilities

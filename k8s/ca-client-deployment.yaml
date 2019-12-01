@@ -42,6 +42,9 @@ spec:
             - mountPath: /scripts
               name: host-mount
               subPath: files/scripts
+            - mountPath: /state
+              name: host-mount
+              subPath: state
             - mountPath: /etc/hyperledger/fabric-ca-server-root
               name: host-mount
               subPath: state/ca-root

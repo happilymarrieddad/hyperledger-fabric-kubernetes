@@ -15,6 +15,87 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 ./bin/nicks/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org2-anchors.tx -channelID mainchannel -asOrg org2 -configPath=/scripts
 
 
+# $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel create -c mainchannel -f ./channels/mainchannel.tx -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem'
+
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel join -b mainchannel.block'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'cp mainchannel.block ./channels/mainchannel.block'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel join -b ./channels/mainchannel.block'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel join -b ./channels/mainchannel.block'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel join -b ./channels/mainchannel.block'
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel update -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem -c mainchannel -f ./channels/org1-anchors.tx'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer channel update -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem -c mainchannel -f ./channels/org2-anchors.tx'
+
+sleep 15
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 0'
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode instantiate -C mainchannel -n rawresources -v 0 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//")
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"1\",\"name\":\"Iron Ore\",\"weight\":42000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+
+# Updating Chaincode
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 2'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 2'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 2'
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 2'
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode upgrade -C mainchannel -n rawresources -v 2 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+
+
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") bash
+
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"2\",\"name\":\"Iron Ore\",\"weight\":20000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"id\":\"3\",\"name\":\"Iron Ore\",\"weight\":10000}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+
+peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+
+https://docs.couchdb.org/en/2.2.0/api/database/find.html#find-expressions
+
+
+# Creating indexes for our chaincode
+
+
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 3'
+
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode upgrade -C mainchannel -n rawresources -v 3 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") bash
+
+peer chaincode query -C mainchannel -n rawresources -c '{"Args":["queryString", "{\"selector\":{ \"weight\": { \"$gt\":5000 } }}"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem
+
+# Adding an update func
+
+
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+docker exec -it $(kubectl get pods -o=name | grep cli-peer1-org2-deployment | sed "s/^.\{4\}//") -- bash -c 'peer chaincode install -p rawresources -n rawresources -v 5'
+
+docker exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode upgrade -C mainchannel -n rawresources -v 5 -c '{\"Args\":[]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+
+
+
+## Kubernetes Local END
+
 
 ## S2-L1 - BYFN Example
 1) cd fabric-samples/first-network

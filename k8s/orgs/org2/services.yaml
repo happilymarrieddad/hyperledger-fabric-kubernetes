@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer0-org2-service
+  labels: {
+    component: peer0,
+    type: peer,
+    org: org2
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: peer0
+    type: peer
+    org: org2
+  ports:
+    - port: 7051
+      targetPort: 7051
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peer1-org2-service
+  labels: {
+    component: peer1,
+    type: peer,
+    org: org2
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: peer1
+    type: peer
+    org: org2
+  ports:
+    - port: 7051
+      targetPort: 7051

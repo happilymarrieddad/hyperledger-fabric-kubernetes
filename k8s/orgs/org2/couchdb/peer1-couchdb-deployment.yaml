@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: peer1-org2-couchdb-deployment
+  labels: {
+    component: peer1,
+    type: couchdb,
+    org: org2
+  }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: peer1
+      type: couchdb
+      org: org2
+  template:
+    metadata:
+      labels:
+        component: peer1
+        type: couchdb
+        org: org2
+    spec:
+      volumes:
+        - name: host-mount
+          hostPath:
+            path: "/host"
+      containers:
+        - name: peer1-org2-couchdb
+          image: couchdb:2.3.1
+          env:
+            - name: COUCHDB_USER
+              value: nick
+            - name: COUCHDB_PASSWORD
+              value: "1234"
+          volumeMounts:
+            - mountPath: /opt/couchdb/data
+              name: host-mount
+              subPath: state/org2/peers/peer1-couchdb
