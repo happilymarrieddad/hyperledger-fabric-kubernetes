@@ -5,6 +5,17 @@ Hyperledger Fabric on Kubernetes
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
 
+
+## Kubernetes Local
+
+# Generating Channel Artifacts
+./bin/nicks/configtxgen -profile OrdererGenesis -channelID syschannel -outputBlock ./orderer/genesis.block -configPath=/scripts
+./bin/nicks/configtxgen -profile MainChannel -outputCreateChannelTx ./channels/mainchannel.tx -channelID mainchannel -configPath=/scripts
+./bin/nicks/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org1-anchors.tx -channelID mainchannel -asOrg org1 -configPath=/scripts
+./bin/nicks/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org2-anchors.tx -channelID mainchannel -asOrg org2 -configPath=/scripts
+
+
+
 ## S2-L1 - BYFN Example
 1) cd fabric-samples/first-network
 NOTE - If you have a problem with the generation of the certs use the binaries provided in the repo
