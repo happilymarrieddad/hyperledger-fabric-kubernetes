@@ -6,6 +6,52 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 
 
+
+## Kubernetes Production
+
+# Install kops
+curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+chmod +x kops-linux-amd64
+sudo mv kops-linux-amd64 /usr/local/bin/kops
+
+
+# Install AWS CLI
+https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html
+
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+unzip awscli-bundle.zip
+sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+
+aws configure
+
+account ID = 
+account Secret = 
+region = us-west-1
+output = json
+
+
+# To test our AWS CLI use this command
+aws ec2 describe-availability-zones --region us-west-1
+
+
+
+export KOPS_STATE_STORE=s3://<name of your bucket>
+
+
+
+# Commands to create network
+ssh-keygen
+(No passphrase)
+
+kops create cluster somenetworkname.k8s.local --zones us-west-1b,us-west-1c --node-count 3 --master-zones us-west-1b,us-west-1c --master-count 3 --authorization AlwaysAllow --yes
+
+kops delete cluster somenetworkname.k8s.local
+
+
+
+
+
 ## Kubernetes Local
 
 # Generating Channel Artifacts
