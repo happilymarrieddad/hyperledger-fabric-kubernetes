@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer2-deployment
+  labels: {
+    component: orderer2,
+    type: orderer
+  }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: orderer2
+      type: orderer
+  template:
+    metadata:
+      labels:
+        component: orderer2
+        type: orderer
+    spec:
+      volumes:
+        - name: host-mount
+          persistentVolumeClaim:
+            claimName: efs-burst-persistent-volume-claim
+      containers:
+        - name: orderer2
+          image: hyperledger/fabric-orderer:1.4.3
+          workingDir: /var/hyperledger/orderer
+          ports:
+            - containerPort: 7050
+          env:
+          - name: ORDERER_GENERAL_LISTENADDRESS
+            value: "0.0.0.0"
+          - name: ORDERER_GENERAL_GENESISMETHOD
+            value: file
+          - name: ORDERER_GENERAL_GENESISPROFILE
+            value: OrdererGenesis
+          - name: ORDERER_GENERAL_SYSTEMCHANNEL
+            value: syschannel
+          - name: ORDERER_GENERAL_GENESISFILE
+            value: /var/hyperledger/orderer/data/genesis.block
+          - name: ORDERER_GENERAL_LOCALMSPID
+            value: orderer
+          - name: ORDERER_GENERAL_LOCALMSPDIR
+            value: /var/hyperledger/orderer/msp
+          - name: ORDERER_GENERAL_TLS_ENABLED
+            value: "true"
+          - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+            value: /var/hyperledger/orderer/tls/server.key
+          - name: ORDERER_GENERAL_TLS_CERTIFICATE
+            value: /var/hyperledger/orderer/tls/server.crt
+          - name: ORDERER_GENERAL_TLS_ROOTCAS
+            value: "[/var/hyperledger/orderer/tls/ca.crt]"
+          - name: ORDERER_KAFKA_TOPIC_REPLICATIONFACOTR
+            value: "1"
+          - name: ORDERER_KAFKA_VERBOSE
+            value: "true"
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+            value: /var/hyperledger/orderer/tls/server.key
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+            value: /var/hyperledger/orderer/tls/server.crt
+          - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+            value: "[/var/hyperledger/orderer/tls/ca.crt]"
+          volumeMounts:
+            - mountPath: /var/hyperledger/orderer/msp
+              name: host-mount
+              subPath: files/scripts/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/msp
+            - mountPath: /var/hyperledger/orderer/tls
+              name: host-mount
+              subPath: files/scripts/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/tls
+            - mountPath: /var/hyperledger/production/orderer
+              name: host-mount
+              subPath: state/orderers/orderer2
+            - mountPath: /var/hyperledger/orderer/data
+              name: host-mount
+              subPath: files/scripts/orderer
+

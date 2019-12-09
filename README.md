@@ -49,6 +49,15 @@ kops create cluster somenetworkname.k8s.local --zones us-west-1b,us-west-1c --no
 kops delete cluster somenetworkname.k8s.local
 
 
+# Commands to copy over files to kubernetes storage
+
+kubectl cp ./s5-connecting-everything/scripts ca-client-deployment-74dc6ddfb4-dz75l:/                          
+kubectl cp ./config.yaml ca-client-deployment-74dc6ddfb4-dz75l:/files                
+kubectl cp ./s5-connecting-everything/chaincode/rawresources ca-client-deployment-74dc6ddfb4-dz75l:/scripts/chaincode
+kubectl cp ./s5-connecting-everything/configtx.yaml ca-client-deployment-74dc6ddfb4-dz75l:/scripts
+kubectl cp ./bin ca-client-deployment-74dc6ddfb4-dz75l:/scripts
+
+
 
 
 
@@ -92,6 +101,9 @@ peer chaincode invoke -C mainchannel -n rawresources -c '{"Args":["store", "{\"i
 
 
 kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer0-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
+kubectl exec -it $(kubectl get pods -o=name | grep cli-peer1-org1-deployment | sed "s/^.\{4\}//") -- bash -c "peer chaincode query -C mainchannel -n rawresources -c '{\"Args\":[\"index\",\"\",\"\"]}' -o orderer0-service:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/ca-root-7054.pem"
 
 # Updating Chaincode
 

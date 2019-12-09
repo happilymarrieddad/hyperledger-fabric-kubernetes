@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer0-service
+  labels: {
+    component: orderer0,
+    type: orderer
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: orderer0
+    type: orderer
+  ports:
+    - port: 7050
+      targetPort: 7050
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer1-service
+  labels: {
+    component: orderer1,
+    type: orderer
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: orderer1
+    type: orderer
+  ports:
+    - port: 7050
+      targetPort: 7050
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderer2-service
+  labels: {
+    component: orderer2,
+    type: orderer
+  }
+spec:
+  type: ClusterIP
+  selector:
+    component: orderer2
+    type: orderer
+  ports:
+    - port: 7050
+      targetPort: 7050
+  
