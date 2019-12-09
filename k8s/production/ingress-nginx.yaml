@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: udemy-hyperledger-kubernetes
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    ingress.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        return 301 https://$host$request_uri;
+      }
+spec:
+  rules:
+    - host: api.udemy-hyperledger-kubernetes.xyz
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: api-service
+              servicePort: 3000
+    - host: www.udemy-hyperledger-kubernetes.xyz
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: web-service
+              servicePort: 3000
+    - http:
+        paths:
+          - path: /
+            backend: 
+              serviceName: web-service
+              servicePort: 3000

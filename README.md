@@ -58,6 +58,9 @@ kubectl cp ./s5-connecting-everything/configtx.yaml ca-client-deployment-74dc6dd
 kubectl cp ./bin ca-client-deployment-74dc6ddfb4-dz75l:/scripts
 
 
+# Adding nginx to our network
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/ingress-nginx/v1.6.0.yaml
+
 
 
 
