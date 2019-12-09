@@ -17,4 +17,4 @@ spec:
     spec:
       containers:
         - name: web
-          image: happilymarrieddadudemy/udemy-kubernetes-front-end:7
+          image: happilymarrieddadudemy/udemy-kubernetes-front-end:9

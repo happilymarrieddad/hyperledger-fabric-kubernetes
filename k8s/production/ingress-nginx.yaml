@@ -36,5 +36,10 @@ spec:
         paths:
           - path: /
             backend: 
-              serviceName: web-service
+              serviceName: api-service
               servicePort: 3000
+
+  tls:
+    - hosts:
+        - udemy-hyperledger-kubernetes.xyz
+      secretName: udemy-hyperledger-kubernetes.xyz

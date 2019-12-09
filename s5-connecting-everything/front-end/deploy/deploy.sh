@@ -1,5 +1,11 @@
 #!/bin/bash
 
-docker build -t happilymarrieddadudemy/udemy-kubernetes-front-end:7 -f Dockerfile .
+export SHA=$(git rev-parse HEAD)
 
-docker push happilymarrieddadudemy/udemy-kubernetes-front-end:7
+docker build -t happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA} -f Dockerfile .
+
+docker push happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA}
+
+sleep 5
+
+kubectl set image deployments/web-deployment web=happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA}
