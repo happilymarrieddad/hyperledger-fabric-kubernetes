@@ -1,0 +1,32 @@
+sudo: required
+language: go
+go:
+  - "1.12.5"
+
+services:
+    - docker
+  
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+
+install:
+  - sed -i -e 's|KUBECTL_CERT_AUTH_DATA|'"${KUBECTL_CERT_AUTH_DATA}"'|g' kubeconfig
+  - sed -i -e 's|KUBECTL_SERVER|'"${KUBECTL_SERVER}"'|g' kubeconfig
+  - sed -i -e 's|KUBECTL_USER_CERT_DATA|'"${KUBECTL_USER_CERT_DATA}"'|g' kubeconfig
+  - sed -i -e 's|KUBECTL_USER_CLIENT_DATA|'"${KUBECTL_USER_CLIENT_DATA}"'|g' kubeconfig
+  - sed -i -e 's|KUBECTL_ADMIN_PASSWORD|'"${KUBECTL_ADMIN_PASSWORD}"'|g' kubeconfig
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+  - mkdir ~/.kube
+  - cp kubeconfig ~/.kube/config
+
+script:
+  - echo "Skipping tests"
+
+deploy:
+  - provider: script
+    script: bash ./deploy.sh
+    on:
+      branch: master
