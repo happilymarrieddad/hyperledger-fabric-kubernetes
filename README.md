@@ -44,18 +44,18 @@ export KOPS_STATE_STORE=s3://<name of your bucket>
 ssh-keygen
 (No passphrase)
 
-kops create cluster somenetworkname.k8s.local --zones us-west-1b,us-west-1c --node-count 3 --master-zones us-west-1b,us-west-1c --master-count 3 --authorization AlwaysAllow --yes
+kops create cluster hyperledger.k8s.local --zones us-west-1b,us-west-1c --node-count 3 --master-zones us-west-1b,us-west-1c --master-count 3 --authorization AlwaysAllow --yes
 
-kops delete cluster somenetworkname.k8s.local
+kops delete cluster hyperledger.k8s.local
 
 
 # Commands to copy over files to kubernetes storage
 
-kubectl cp ./s5-connecting-everything/scripts ca-client-deployment-74dc6ddfb4-dz75l:/                          
-kubectl cp ./config.yaml ca-client-deployment-74dc6ddfb4-dz75l:/files                
-kubectl cp ./s5-connecting-everything/chaincode/rawresources ca-client-deployment-74dc6ddfb4-dz75l:/scripts/chaincode
-kubectl cp ./s5-connecting-everything/configtx.yaml ca-client-deployment-74dc6ddfb4-dz75l:/scripts
-kubectl cp ./bin ca-client-deployment-74dc6ddfb4-dz75l:/scripts
+kubectl cp ./s5-connecting-everything/scripts ca-client-deployment-74dc6ddfb4-c8s2f:/
+kubectl cp ./config.yaml ca-client-deployment-74dc6ddfb4-c8s2f:/files
+kubectl cp ./s5-connecting-everything/chaincode/rawresources ca-client-deployment-74dc6ddfb4-c8s2f:/scripts/chaincode/rawresources
+kubectl cp ./s5-connecting-everything/configtx.yaml ca-client-deployment-74dc6ddfb4-c8s2f:/scripts
+kubectl cp ./bin ca-client-deployment-74dc6ddfb4-c8s2f:/scripts
 
 
 # Adding nginx to our network
