@@ -30,6 +30,8 @@ func Update(clients *hyperledger.Clients,id string, rr *models.RawResource, opts
 		}
 	}
 
+	rr.Visible = true
+
 	packet, err := json.Marshal(rr)
 	if err != nil {
 		return nil, err
