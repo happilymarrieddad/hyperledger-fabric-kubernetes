@@ -1,7 +1,6 @@
 package rawresources
 
 import (
-	"errors"
 	"encoding/json"
 	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/hyperledger"
@@ -18,7 +17,7 @@ func Update(clients *hyperledger.Clients,id string, rr *models.RawResource, opts
 			return nil, err
 		}
 
-		if rr.name != "" && existingRawResource.Name != rr.Name {
+		if rr.Name != "" && existingRawResource.Name != rr.Name {
 			existingRawResource.Name = rr.Name
 		}
 
