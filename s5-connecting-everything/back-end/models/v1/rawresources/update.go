@@ -11,22 +11,37 @@ type UpdateOpts struct {
 	Replace bool
 }
 
-func Update(clients *hyperledger.Clients,id string, usr *models.RawResource, opts *UpdateOpts) (*models.RawResource, error) {
-	if opts.Replace {
-		packet, err := json.Marshal(usr)
+func Update(clients *hyperledger.Clients,id string, rr *models.RawResource, opts *UpdateOpts) (*models.RawResource, error) {
+	if !opts.Replace {
+		existingRawResource, err := Show(clients, id)
 		if err != nil {
 			return nil, err
 		}
 
-		if _, err = clients.Invoke("org1", "rawresources", "update", [][]byte{
-			[]byte(id),
-			packet,
-		}); err != nil {
-			return nil, err
+		if rr.name != "" && existingRawResource.Name != rr.Name {
+			existingRawResource.Name = rr.Name
 		}
-	} else {
-		return nil, errors.New("patch is not implemented yet")
+
+		if rr.TypeID != "" && existingRawResource.TypeID != rr.TypeID {
+			existingRawResource.TypeID = rr.TypeID
+		}
+
+		if rr.Weight > 0 && existingRawResource.Weight != rr.Weight {
+			existingRawResource.Weight = rr.Weight
+		}
 	}
 
-	return usr, nil
+	packet, err := json.Marshal(rr)
+	if err != nil {
+		return nil, err
+	}
+
+	if _, err = clients.Invoke("org1", "rawresources", "update", [][]byte{
+		[]byte(id),
+		packet,
+	}); err != nil {
+		return nil, err
+	}
+
+	return rr, nil
 }

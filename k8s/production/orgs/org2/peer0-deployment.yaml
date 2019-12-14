@@ -72,9 +72,15 @@ spec:
             - name: CORE_LEDGER_STATE_STATEDATABASE
               value: CouchDB
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME
-              value: nick
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: username
             - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
-              value: "1234"
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: password
           volumeMounts:
             - mountPath: /var/run
               name: host

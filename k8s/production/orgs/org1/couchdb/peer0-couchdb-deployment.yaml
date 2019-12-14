@@ -30,9 +30,15 @@ spec:
           image: couchdb:2.3.1
           env:
             - name: COUCHDB_USER
-              value: nick
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: username
             - name: COUCHDB_PASSWORD
-              value: "1234"
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: password
           volumeMounts:
             - mountPath: /opt/couchdb/data
               name: host-mount

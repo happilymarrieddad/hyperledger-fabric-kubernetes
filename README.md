@@ -62,6 +62,9 @@ kubectl cp ./bin ca-client-deployment-74dc6ddfb4-c8s2f:/scripts
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/ingress-nginx/v1.6.0.yaml
 
 
+# Adding secrets
+kubectl create secret generic couchdb --from-literal username=nick --from-literal password=1234
+
 
 
 ## Kubernetes Local
