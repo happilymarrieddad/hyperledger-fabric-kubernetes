@@ -8,6 +8,6 @@ docker build -t happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA} \
 
 docker push happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA}
 
-sleep 5
+sleep 10
 
 kubectl set image deployments/web-deployment web=happilymarrieddadudemy/udemy-kubernetes-front-end:${SHA}

@@ -8,6 +8,6 @@ docker build -t happilymarrieddadudemy/udemy-kubernetes-back-end:${SHA} \
 
 docker push happilymarrieddadudemy/udemy-kubernetes-back-end:${SHA}
 
-sleep 5
+sleep 10
 
 kubectl set image deployments/api-deployment api=happilymarrieddadudemy/udemy-kubernetes-back-end:${SHA}
