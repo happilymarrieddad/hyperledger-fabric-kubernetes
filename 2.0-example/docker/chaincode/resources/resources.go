@@ -99,15 +99,9 @@ func (rc *ResourcesContract) Read(ctx contractapi.TransactionContextInterface, k
 // Index - read all resources from the world state
 func (rc *ResourcesContract) Index(
 	ctx contractapi.TransactionContextInterface,
-	query string,
-	pageSize int32,
-	bookmark string,
 ) (ret string, err error) {
-	if len(query) == 0 {
-		query = `{"selector": {"id":{"$ne":"-"}}}`
-	}
 
-	resultsIterator, _, err := ctx.GetStub().GetQueryResultWithPagination(query, pageSize, bookmark)
+	resultsIterator, _, err := ctx.GetStub().GetQueryResultWithPagination(`{"selector": {"id":{"$ne":"-"}}}`, 0, "")
 	if err != nil {
 		return
 	}
