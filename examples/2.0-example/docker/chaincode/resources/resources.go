@@ -131,18 +131,11 @@ func constructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorI
 			return nil, err
 		}
 		// Add a comma before array members, suppress it for the first array member
-		if bArrayMemberAlreadyWritten == true {
+		if bArrayMemberAlreadyWritten {
 			buffer.WriteString(",")
 		}
-		buffer.WriteString("{\"Key\":")
-		buffer.WriteString("\"")
-		buffer.WriteString(queryResponse.Key)
-		buffer.WriteString("\"")
-
-		buffer.WriteString(", \"Record\":")
 		// Record is a JSON object, so we write as-is
 		buffer.WriteString(string(queryResponse.Value))
-		buffer.WriteString("}")
 		bArrayMemberAlreadyWritten = true
 	}
 	buffer.WriteString("]")

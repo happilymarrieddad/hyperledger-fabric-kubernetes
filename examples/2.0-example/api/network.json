@@ -1,0 +1,57 @@
+{
+	"name": "first-network",
+	"version": "1.1",
+	"channels": {
+		"main": {
+            "orderers": [
+                "orderer0"
+            ],
+			"peers": [
+				"peer0-org1"
+            ],
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"org1": {
+			"mspid": "org1",
+			"adminPrivateKey": {
+				"path": "../docker/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/keystore/513ed3472cb1bc642ad1287a6121a88d4cc8d63fd25923b55aa35a2c2771d9ed_sk"
+			},
+			"peers": ["peer0-org1"],
+			"signedCert": {
+				"path": "../docker/crypto-config/peerOrganizations/org1/users/Admin@org1/msp/signcerts/Admin@org1-cert.pem"
+			}
+		}
+    },
+    "orderers": {
+        "orderer0": {
+            "url": "grpcs://localhost:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0"
+            },
+            "tlsCACerts": {
+                "path": "../docker/crypto-config/ordererOrganizations/orderer/orderers/orderer0/msp/tlscacerts/tlsca.orderer-cert.pem"
+            }
+        }
+    },
+	"peers": {
+		"peer0-org1": {
+			"url": "grpcs://0.0.0.0:7051",
+			"tlsCACerts": {
+				"path": "../docker/crypto-config/peerOrganizations/org1/peers/peer0-org1/tls/ca.crt"
+			},
+            "grpcOptions": {
+              "ssl-target-name-override": "peer0-org1"
+            }
+		}
+	}
+}

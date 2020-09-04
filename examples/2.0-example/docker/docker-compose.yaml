@@ -454,7 +454,6 @@ services:
     networks:
       - hyperledger
 
-
   explorerdb:
     image: hyperledger/explorer-db:latest
     container_name: explorerdb
@@ -494,14 +493,26 @@ services:
       - DISCOVERY_AS_LOCALHOST=false
     volumes:
       - ./explorer/config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./explorer/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ./crypto-config:/opt/explorer/app/platform/fabric/connection-profile
       - ./explorer/organizations:/tmp/crypto
-      - walletstore:/opt/wallet
+      - ./explorer/walletstore:/opt/wallet
     command: sh -c "node /opt/explorer/main.js && tail -f /dev/null"
     ports:
       - 8080:8080
     depends_on:
       explorerdb:
         condition: service_healthy
+    networks:
+      - hyperledger
+
+  api:
+    image: node
+    container_name: api
+    command: sleep infinity
+    volumes:
+      - ../api:/api
+      - ./explorer/organizations:/tmp/crypto
+    depends_on:
+      - peer0-org1
     networks:
       - hyperledger

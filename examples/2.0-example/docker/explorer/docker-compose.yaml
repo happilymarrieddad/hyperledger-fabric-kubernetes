@@ -7,7 +7,7 @@ volumes:
   walletstore:
 
 networks:
-  mynetwork.com:
+  hyperledger:
 
 services:
 
@@ -27,7 +27,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - mynetwork.com
+      - hyperledger
 
   explorer:
     image: hyperledger/explorer:latest
@@ -47,7 +47,7 @@ services:
       - ./config.json:/opt/explorer/app/platform/fabric/config.json
       - ./connection-profile:/opt/explorer/app/platform/fabric/connection-profile
       - ./organizations:/tmp/crypto
-      - walletstore:/opt/wallet
+      - ./walletstore:/opt/wallet
     command: sh -c "node /opt/explorer/main.js && tail -f /dev/null"
     ports:
       - 8080:8080
@@ -55,4 +55,4 @@ services:
       explorerdb:
         condition: service_healthy
     networks:
-      - mynetwork.com
+      - hyperledger
