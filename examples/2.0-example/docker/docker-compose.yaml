@@ -493,8 +493,8 @@ services:
       - DISCOVERY_AS_LOCALHOST=false
     volumes:
       - ./explorer/config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./crypto-config:/opt/explorer/app/platform/fabric/connection-profile
-      - ./explorer/organizations:/tmp/crypto
+      - ./explorer/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ./crypto-config:/tmp/crypto
       - ./explorer/walletstore:/opt/wallet
     command: sh -c "node /opt/explorer/main.js && tail -f /dev/null"
     ports:
@@ -507,12 +507,16 @@ services:
 
   api:
     image: node
+    working_dir: /api
     container_name: api
-    command: sleep infinity
+    command: node index.js
+    ports:
+      - 4000:4000
     volumes:
       - ../api:/api
-      - ./explorer/organizations:/tmp/crypto
+      - ./crypto-config/:/tmp/crypto
     depends_on:
-      - peer0-org1
+      explorerdb:
+        condition: service_healthy
     networks:
       - hyperledger

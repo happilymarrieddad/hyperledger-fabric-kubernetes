@@ -41,7 +41,7 @@
 		"org1": {
 			"mspid": "org1",
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/keystore/513ed3472cb1bc642ad1287a6121a88d4cc8d63fd25923b55aa35a2c2771d9ed_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/keystore/7f281db4a80dbef513609a1d6515a1d22e016dba453ce4a3a85288a5d9c1d965_sk"
 			},
 			"peers": ["peer0-org1","peer1-org1"],
 			"signedCert": {
@@ -51,7 +51,7 @@
 		"org2": {
 			"mspid": "org2",
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org2/users/Admin@org2/msp/keystore/f0b95683c2e187c6ef5412035579783d4c8db5785eec0c57740fe134b028dc5b_sk"
+				"path": "/tmp/crypto/peerOrganizations/org2/users/Admin@org2/msp/keystore/bec1fb5e88afade205d6ab43ca2609521c8125de58fff93d780d790a4c2faaf3_sk"
 			},
 			"peers": ["peer0-org2","peer1-org2"],
 			"signedCert": {
