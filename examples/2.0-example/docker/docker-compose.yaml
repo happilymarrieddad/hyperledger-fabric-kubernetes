@@ -1,4 +1,8 @@
-version: '2'
+version: '2.1'
+
+volumes:
+  pgdata:
+  walletstore:
 
 networks:
   hyperledger:
@@ -130,7 +134,6 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_PEER_LOCALMSPID=org1
       - CORE_PEER_ENDORSER_ENABLED=true
-      - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -186,7 +189,6 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
       - CORE_PEER_LOCALMSPID=org1
       - CORE_PEER_ENDORSER_ENABLED=true
-      - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -244,7 +246,6 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
       - CORE_PEER_LOCALMSPID=org2
       - CORE_PEER_ENDORSER_ENABLED=true
-      - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -300,7 +301,6 @@ services:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
       - CORE_PEER_LOCALMSPID=org2
       - CORE_PEER_ENDORSER_ENABLED=true
-      - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -451,5 +451,57 @@ services:
     depends_on:
       - peer1-org2
     command: sleep 500000
+    networks:
+      - hyperledger
+
+
+  explorerdb:
+    image: hyperledger/explorer-db:latest
+    container_name: explorerdb
+    hostname: explorerdb
+    environment:
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWORD=password
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    depends_on:
+      - peer0-org1
+      - peer1-org1
+      - peer0-org2
+      - peer1-org2
+    networks:
+      - hyperledger
+
+  explorer:
+    image: hyperledger/explorer:latest
+    container_name: explorer
+    hostname: explorer
+    environment:
+      - DATABASE_HOST=explorerdb
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+      - LOG_LEVEL_APP=debug
+      - LOG_LEVEL_DB=debug
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
+      - DISCOVERY_AS_LOCALHOST=false
+    volumes:
+      - ./explorer/config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./explorer/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ./explorer/organizations:/tmp/crypto
+      - walletstore:/opt/wallet
+    command: sh -c "node /opt/explorer/main.js && tail -f /dev/null"
+    ports:
+      - 8080:8080
+    depends_on:
+      explorerdb:
+        condition: service_healthy
     networks:
       - hyperledger

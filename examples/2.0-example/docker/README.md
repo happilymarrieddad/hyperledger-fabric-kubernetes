@@ -79,3 +79,27 @@ docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 2.0 --sequence 2'
 
 ```
+
+
+
+
+## Hyperledger Explorer
+
+https://github.com/hyperledger/blockchain-explorer
+
+```bash
+wget https://raw.githubusercontent.com/hyperledger/blockchain-explorer/master/examples/net1/config.json
+wget https://raw.githubusercontent.com/hyperledger/blockchain-explorer/master/examples/net1/connection-profile/first-network.json -P connection-profile
+wget https://raw.githubusercontent.com/hyperledger/blockchain-explorer/master/docker-compose.yaml
+```
+
+```bash
+cp -r ../crypto-config ./organizations
+```
+
+You need to change the priv_key (name of the file) in the connection-profile/first-network.json file.
+
+```bash
+NOTE:
+I would suggest that you create the network without the explorer first and then start it again after.
+```

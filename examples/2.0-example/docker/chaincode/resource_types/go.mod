@@ -1,9 +1,9 @@
-module github.com/happilymarrieddad/hyperledger2.0/chaincode/resource_types
+module resource_types
 
-go 1.13
+go 1.14
 
 require (
-	github.com/google/uuid v1.1.1
-	github.com/hyperledger/fabric-chaincode-go v0.0.0-20200128192331-2d899240a7ed
-	github.com/hyperledger/fabric-contract-api-go v1.0.0
+	github.com/google/uuid v1.1.2
+	github.com/hyperledger/fabric-chaincode-go v0.0.0-20200728190242-9b3ae92d8664
+	github.com/hyperledger/fabric-contract-api-go v1.1.0
 )

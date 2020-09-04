@@ -1,0 +1,88 @@
+{
+	"name": "first-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "admin",
+			"password": "adminpw"
+		},
+		"enableAuthentication": true,
+		"organization": "org1",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"main": {
+			"peers": {
+				"peer0-org1": {},
+				"peer1-org1": {},
+				"peer0-org2": {},
+				"peer1-org2": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"org1": {
+			"mspid": "org1",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/keystore/b093695fdcd68a2cd01990f12fea2965849dae6271e8b98c746ff649f7081245_sk"
+			},
+			"peers": ["peer0-org1","peer1-org1"],
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/signcerts/Admin@org1-cert.pem"
+			}
+		},
+		"org2": {
+			"mspid": "org2",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/org2/users/Admin@org2/msp/keystore/2c10eb914899513e4b1513bfa6964b8e73d903af89fe51a7958eeb0ad96789d7_sk"
+			},
+			"peers": ["peer0-org2","peer1-org2"],
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/org2/users/Admin@org2/msp/signcerts/Admin@org2-cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer0-org1": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1/peers/peer0-org1/tls/ca.crt"
+			},
+			"url": "grpcs://peer0-org1:7051"
+		},
+		"peer1-org1": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org1/peers/peer1-org1/tls/ca.crt"
+			},
+			"url": "grpcs://peer1-org1:8051"
+		},
+		"peer0-org2": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org2/peers/peer0-org2/tls/ca.crt"
+			},
+			"url": "grpcs://peer0-org2:9051"
+		},
+		"peer1-org2": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/org2/peers/peer1-org2/tls/ca.crt"
+			},
+			"url": "grpcs://peer1-org2:10051"
+		}
+	}
+}

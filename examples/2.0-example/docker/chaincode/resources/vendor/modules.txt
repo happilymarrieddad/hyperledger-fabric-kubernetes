@@ -23,12 +23,14 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/hyperledger/fabric-chaincode-go v0.0.0-20200511190512-bcfeb58dd83a
+# github.com/hyperledger/fabric-chaincode-go v0.0.0-20200728190242-9b3ae92d8664
+## explicit
 github.com/hyperledger/fabric-chaincode-go/pkg/attrmgr
 github.com/hyperledger/fabric-chaincode-go/pkg/cid
 github.com/hyperledger/fabric-chaincode-go/shim
 github.com/hyperledger/fabric-chaincode-go/shim/internal
 # github.com/hyperledger/fabric-contract-api-go v1.1.0
+## explicit
 github.com/hyperledger/fabric-contract-api-go/contractapi
 github.com/hyperledger/fabric-contract-api-go/contractapi/utils
 github.com/hyperledger/fabric-contract-api-go/internal

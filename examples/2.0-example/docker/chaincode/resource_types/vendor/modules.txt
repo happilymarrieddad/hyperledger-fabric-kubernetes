@@ -23,14 +23,17 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/google/uuid v1.1.1
+# github.com/google/uuid v1.1.2
+## explicit
 github.com/google/uuid
-# github.com/hyperledger/fabric-chaincode-go v0.0.0-20200128192331-2d899240a7ed
+# github.com/hyperledger/fabric-chaincode-go v0.0.0-20200728190242-9b3ae92d8664
+## explicit
 github.com/hyperledger/fabric-chaincode-go/pkg/attrmgr
 github.com/hyperledger/fabric-chaincode-go/pkg/cid
 github.com/hyperledger/fabric-chaincode-go/shim
 github.com/hyperledger/fabric-chaincode-go/shim/internal
-# github.com/hyperledger/fabric-contract-api-go v1.0.0
+# github.com/hyperledger/fabric-contract-api-go v1.1.0
+## explicit
 github.com/hyperledger/fabric-contract-api-go/contractapi
 github.com/hyperledger/fabric-contract-api-go/contractapi/utils
 github.com/hyperledger/fabric-contract-api-go/internal
@@ -38,7 +41,7 @@ github.com/hyperledger/fabric-contract-api-go/internal/types
 github.com/hyperledger/fabric-contract-api-go/internal/utils
 github.com/hyperledger/fabric-contract-api-go/metadata
 github.com/hyperledger/fabric-contract-api-go/serializer
-# github.com/hyperledger/fabric-protos-go v0.0.0-20200124220212-e9cfc186ba7b
+# github.com/hyperledger/fabric-protos-go v0.0.0-20200424173316-dd554ba3746e
 github.com/hyperledger/fabric-protos-go/common
 github.com/hyperledger/fabric-protos-go/ledger/queryresult
 github.com/hyperledger/fabric-protos-go/ledger/rwset
@@ -111,5 +114,5 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2
