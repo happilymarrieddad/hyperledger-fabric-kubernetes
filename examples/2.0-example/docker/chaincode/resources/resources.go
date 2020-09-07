@@ -1,5 +1,6 @@
 package main
 
+// https://hyperledger-fabric.readthedocs.io/en/latest/chaincode4ade.html
 import (
 	"encoding/json"
 	"fmt"
