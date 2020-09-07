@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const contract = mainNetwork.getContract('resources');
 
     // Submit transactions for the smart contract
-    const submitResult = await contract.evaluateTransaction('index');
+    const submitResult = await contract.evaluateTransaction('index').catch(err => res.status(400).send(err));;
 
     res.json(JSON.parse(submitResult.toString()));
 })
@@ -26,9 +26,11 @@ router.get('/:id', async (req, res) => {
     const contract = mainNetwork.getContract('resources');
 
     // Submit transactions for the smart contract
-    const submitResult = await contract.evaluateTransaction('read', [req.params.id]);
-    
-    res.json(JSON.parse(submitResult.toString()));
+    const submitResult = await contract.evaluateTransaction('read', [req.params.id]).catch(err => res.status(400).send(err));
+    const result = JSON.parse(submitResult.toString())
+
+    // The querier always returns an array
+    res.json(result[0]);
 })
 
 // Commiting Transactions
@@ -53,7 +55,7 @@ router.post('/', async (req, res) => {
 
     const contract = mainNetwork.getContract('resources');
 
-    await contract.submitTransaction('create', newResource.id, JSON.stringify(newResource));
+    await contract.submitTransaction('create', newResource.id, JSON.stringify(newResource)).catch(err => res.status(400).send(err));;
 
     res.json(newResource);
 })
