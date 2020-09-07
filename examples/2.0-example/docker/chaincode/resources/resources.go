@@ -10,8 +10,7 @@ import (
 )
 
 func main() {
-	resourceContract := new(ResourcesContract)
-	cc, err := contractapi.NewChaincode(resourceContract)
+	cc, err := contractapi.NewChaincode(&ResourcesContract{})
 
 	if err != nil {
 		panic(err.Error())
