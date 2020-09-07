@@ -12,6 +12,7 @@ router.get('/', async (req, res) => {
     // Submit transactions for the smart contract
     const submitResult = await contract.evaluateTransaction('index').catch(err => res.status(400).send(err));;
 
+    // Remove the unnecessary quotes
     res.json(JSON.parse(submitResult.toString()));
 })
 
@@ -27,10 +28,9 @@ router.get('/:id', async (req, res) => {
 
     // Submit transactions for the smart contract
     const submitResult = await contract.evaluateTransaction('read', [req.params.id]).catch(err => res.status(400).send(err));
-    const result = JSON.parse(submitResult.toString())
 
-    // The querier always returns an array
-    res.json(result[0]);
+    // Remove the unnecessary quotes
+    res.json(JSON.parse(submitResult.toString()));
 })
 
 // Commiting Transactions

@@ -1,7 +1,7 @@
 const fabric = require('fabric-network');
 const fs = require('fs');
 
-const pvkKeyName = `27b8e781f7ceab9083c23794f7b89f4cbf8b532366c27c6e6c16d4fb3b6fb83e_sk`
+const pvkKeyName = `d881fafa8af2aad4d11f74535e4175da316d98981923e271bbbb85b4492d6eee_sk`
 const walletDirectoryPath = './system/walletstore'
 const connectionProfilePath = './system/configs/network-local.json';
 const admin1org1MSPPath = `../docker/crypto-config/peerOrganizations/org1/users/Admin@org1/msp`

@@ -48,8 +48,8 @@ docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 1.0 --sequence 1'
 
 
-docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create", "1","{\"id\":\"1\",\"name\":\"Iron Ore\",\"resource_type_id\":1}"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
-docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create", "2","{\"id\":\"2\",\"name\":\"Iron Ore\",\"resource_type_id\":1}"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","1","Iron Ore","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","2","Copper Ore","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 
 # peer chaincode query -C main -n resources -c '{"Args":["Index"]}' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
@@ -58,7 +58,7 @@ docker exec -it cli-peer0-org2 bash -c 'peer chaincode query -C main -n resource
 docker exec -it cli-peer1-org2 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 
 sleep 15
-
+## How to upgrade chaincode - examples
 
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode package resources.tar.gz --path /opt/gopath/src/resources --lang golang --label resources_2'
 docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode package resources.tar.gz --path /opt/gopath/src/resources --lang golang --label resources_2'
