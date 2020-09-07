@@ -51,9 +51,7 @@ func (rc *ResourcesContract) Create(ctx contractapi.TransactionContextInterface,
 		return fmt.Errorf("Cannot create world state pair with key %s. Already exists", key)
 	}
 
-	err = ctx.GetStub().PutState(key, []byte(value))
-
-	if err != nil {
+	if err = ctx.GetStub().PutState(key, []byte(value)); err != nil {
 		return errors.New("Unable to interact with world state")
 	}
 
@@ -82,18 +80,19 @@ func (rc *ResourcesContract) Update(ctx contractapi.TransactionContextInterface,
 }
 
 // Read returns the value at key in the world state
-func (rc *ResourcesContract) Read(ctx contractapi.TransactionContextInterface, key string) (string, error) {
-	existing, err := ctx.GetStub().GetState(key)
-
+func (rc *ResourcesContract) Read(ctx contractapi.TransactionContextInterface, key string) (ret string, err error) {
+	resultsIterator, _, err := ctx.GetStub().GetQueryResultWithPagination(`{"selector": {"id":"`+key+`"}}`, 0, "")
 	if err != nil {
-		return "", errors.New("Unable to interact with world state")
+		return
+	}
+	defer resultsIterator.Close()
+
+	buffer, err := constructQueryResponseFromIterator(resultsIterator)
+	if err != nil {
+		return "", fmt.Errorf("Unable to construct query restult")
 	}
 
-	if existing == nil {
-		return "", fmt.Errorf("Cannot read world state pair with key %s. Does not exist", key)
-	}
-
-	return string(existing), nil
+	return buffer.String(), nil
 }
 
 // Index - read all resources from the world state

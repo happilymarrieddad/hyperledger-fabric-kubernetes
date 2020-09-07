@@ -2,3 +2,7 @@
 **/github.com
 **/node_modules
 **/crypto-config
+**/organizations
+**/orderer
+**/channels
+**/state
