@@ -13,7 +13,6 @@ services:
     container_name: orderer0
     image: hyperledger/fabric-orderer:2.2
     working_dir: /var/hyperledger/orderer
-    restart: always
     environment: 
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
@@ -44,7 +43,6 @@ services:
     container_name: orderer1
     image: hyperledger/fabric-orderer:2.2
     working_dir: /var/hyperledger/orderer
-    restart: always
     environment: 
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
@@ -105,7 +103,6 @@ services:
   peer0-org1-couchdb:
     image: couchdb:2.3.1
     container_name: peer0-org1-couchdb
-    restart: always
     environment:
       - COUCHDB_USER=nick
       - COUCHDB_PASSWORD=1234
@@ -119,7 +116,6 @@ services:
     image: hyperledger/fabric-peer:2.2
     container_name: peer0-org1
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    restart: always
     command: peer node start
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -160,7 +156,6 @@ services:
   peer1-org1-couchdb:
     image: couchdb:2.3.1
     container_name: peer1-org1-couchdb
-    restart: always
     environment:
       - COUCHDB_USER=nick
       - COUCHDB_PASSWORD=1234
@@ -174,7 +169,6 @@ services:
     image: hyperledger/fabric-peer:2.2
     container_name: peer1-org1
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    restart: always
     command: peer node start
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -217,7 +211,6 @@ services:
   peer0-org2-couchdb:
     image: couchdb:2.3.1
     container_name: peer0-org2-couchdb
-    restart: always
     environment:
       - COUCHDB_USER=nick
       - COUCHDB_PASSWORD=1234
@@ -231,7 +224,6 @@ services:
     image: hyperledger/fabric-peer:2.2
     container_name: peer0-org2
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    restart: always
     command: peer node start
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -272,7 +264,6 @@ services:
   peer1-org2-couchdb:
     image: couchdb:2.3.1
     container_name: peer1-org2-couchdb
-    restart: always
     environment:
       - COUCHDB_USER=nick
       - COUCHDB_PASSWORD=1234
@@ -286,7 +277,6 @@ services:
     image: hyperledger/fabric-peer:2.2
     container_name: peer1-org2
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    restart: always
     command: peer node start
     environment:
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -329,7 +319,6 @@ services:
   cli-peer0-org1:
     container_name: cli-peer0-org1
     image: hyperledger/fabric-tools:2.2
-    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_PEER_ADDRESSAUTODETECT=true
@@ -361,7 +350,6 @@ services:
   cli-peer1-org1:
     container_name: cli-peer1-org1
     image: hyperledger/fabric-tools:2.2
-    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_PEER_ADDRESSAUTODETECT=true
@@ -393,7 +381,6 @@ services:
   cli-peer0-org2:
     container_name: cli-peer0-org2
     image: hyperledger/fabric-tools:2.2
-    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_PEER_ADDRESSAUTODETECT=true
@@ -425,7 +412,6 @@ services:
   cli-peer1-org2:
     container_name: cli-peer1-org2
     image: hyperledger/fabric-tools:2.2
-    restart: always
     environment:
       - GOPATH=/opt/gopath
       - CORE_PEER_ADDRESSAUTODETECT=true

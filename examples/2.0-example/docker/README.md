@@ -29,6 +29,33 @@ docker exec -it cli-peer0-org2 bash -c 'peer channel update -o orderer0:7050 --t
 sleep 15
 
 
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_1'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_1'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_1'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_1'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 1.0 --sequence 1 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 1.0 --sequence 1 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 1.0 --sequence 1'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resource_types -c '\''{"Args":["Create","1","Raw Resource"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode query -C main -n resource_types -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+
+
+
+
+
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode package resources.tar.gz --path /opt/gopath/src/resources --lang golang --label resources_1'
 docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode package resources.tar.gz --path /opt/gopath/src/resources --lang golang --label resources_1'
 docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode package resources.tar.gz --path /opt/gopath/src/resources --lang golang --label resources_1'
@@ -40,11 +67,9 @@ docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode install resourc
 docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode install resources.tar.gz &> pkg.txt'
 docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode install resources.tar.gz'
 
-# $(tail -n 1 pkg.txt | awk 'NF>1{print $NF}')
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 1.0 --sequence 1 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
 docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 1.0 --sequence 1 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
 
-# I believe you only need to do this for ONE of the peers in the network
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 1.0 --sequence 1'
 
 
@@ -77,6 +102,40 @@ docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg
 
 
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 2.0 --sequence 2'
+
+
+
+
+
+
+
+RESOURCE TYPES
+
+
+sleep 15
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_2'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_2'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_2'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_2'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 2.0 --sequence 2 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 2.0 --sequence 2 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 2.0 --sequence 2'
+
+
+
+RESOURCES
 
 
 sleep 15
@@ -166,6 +225,38 @@ docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg
 
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resources --version 6.0 --sequence 6'
 
+
+
+
+
+
+
+
+
+
+
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_3'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_3'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_3'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode package resource_types.tar.gz --path /opt/gopath/src/resource_types --lang golang --label resource_types_3'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org1 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz &> pkg.txt'
+docker exec -it cli-peer1-org2 bash -c 'peer lifecycle chaincode install resource_types.tar.gz'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 3.0 --sequence 3 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 3.0 --sequence 3 --package-id $(tail -n 1 pkg.txt | awk '\''NF>1{print $NF}'\'')'
+
+
+docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 3.0 --sequence 3'
+
+
+
 ```
 
 
@@ -190,4 +281,16 @@ You need to change the priv_key (name of the file) in the connection-profile/fir
 ```bash
 NOTE:
 I would suggest that you create the network without the explorer first and then start it again after.
+```
+
+## Tests to ensure that an invalid resource_type_id can not be used in the chaincode.
+
+```bash
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","3","Iron Ore 2","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","4","Copper Ore 3","2"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+```
+
+```bash
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","5","Iron Ore 4","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","6","Copper Ore 5","2"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 ```

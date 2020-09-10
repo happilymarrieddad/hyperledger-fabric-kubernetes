@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"github.com/hyperledger/fabric/common/util"
 )
 
 func main() {
@@ -49,10 +50,17 @@ func (rc *ResourcesContract) Create(ctx contractapi.TransactionContextInterface,
 		return fmt.Errorf("Cannot create world state pair with id %s. Already exists", id)
 	}
 
+	// TODO: Verify this name is unique
 	newResource := &Resource{
 		ID:             id,
-		Name:           name,           // TODO: Verify this name is unique
-		ResourceTypeID: resourceTypeID, // TODO: Verify that this is a valid resource_type_id
+		Name:           name,
+		ResourceTypeID: resourceTypeID,
+	}
+
+	chainCodeArgs := util.ToChaincodeArgs("Read", resourceTypeID)
+
+	if res := ctx.GetStub().InvokeChaincode("resource_types", chainCodeArgs, ""); res.Status != 200 {
+		return fmt.Errorf("Resource type '%s' does not exist", resourceTypeID)
 	}
 
 	bytes, err := json.Marshal(newResource)

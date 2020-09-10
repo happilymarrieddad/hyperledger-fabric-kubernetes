@@ -16,5 +16,8 @@ gen_channel_artifacts: set_crypto_perms
 	configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org2anchor.tx -channelID main -asOrg org2
 
 clean:
-	sudo rm -rf state crypto-config orderer channels
+	sudo rm -rf state orderer channels
 	mkdir -p state orderer channels
+
+full_clean: clean
+	sudo rm -rf crypto-config
