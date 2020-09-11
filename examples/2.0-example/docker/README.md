@@ -49,7 +49,7 @@ docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o order
 
 
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resource_types -c '\''{"Args":["Create","1","Raw Resource"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
-
+sleep 5
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode query -C main -n resource_types -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 
 

@@ -40,24 +40,15 @@ router.post('/', async (req, res) => {
         return;
     }
 
-    const newResource = {
-        id: uuid.v4(), // TODO: actually generate new id
-        name: req.body.name,
-        resource_type_id: req.body.resource_type_id,
-    }
-
-    if (newResource.name.length == 0 || newResource.resource_type_id < 1) {
-        res.status(400).send('resource requires name and resource_type_id');
-        return;
-    }
-
     mainNetwork = await network.setup();
 
     const contract = mainNetwork.getContract('resources');
 
-    await contract.submitTransaction('create', newResource.id, JSON.stringify(newResource)).catch(err => res.status(400).send(err));;
+    req.body.id = uuid.v4()
 
-    res.json(newResource);
+    await contract.submitTransaction('create', req.body.id, req.body.name, req.body.resource_type_id).catch(err => res.status(400).send(err));;
+
+    res.json(req.body);
 })
 
 router.put('/:id', async (req, res) => {
