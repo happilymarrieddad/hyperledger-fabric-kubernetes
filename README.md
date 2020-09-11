@@ -185,9 +185,9 @@ This is for Ubuntu-like distro's
 3) sudo apt install build-essential zsh curl make emacs htop -y
 4) https://github.com/robbyrussell/oh-my-zsh
 5) https://golang.org/dl/
-    - tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+    - tar -C /usr/local -xzf go1.15.linux-amd64.tar.gz
 6) sudo apt install nodejs
-    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install --yes nodejs
+    - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && sudo apt-get install --yes nodejs
 7) http://docs.docker.com/install/linux/docker-ce/ubuntu/
     - IF ON MINT!!!! Make sure you use this command instead
         - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
@@ -205,5 +205,5 @@ OPTIONAL
 
 ## My Own Notes
 [Link to Markup for README's](https://guides.github.com/features/mastering-markdown/)
-
-https://kubernetes.io/docs/tasks/tools/install-kubectl/
+[Link to Chaincode Stub](https://github.com/hyperledger/fabric-chaincode-go/blob/master/shim/interfaces.go)
+[Link to Install Kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
