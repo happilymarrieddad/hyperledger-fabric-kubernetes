@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/fsouza/go-dockerclient v1.6.0 // indirect
+	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
 	github.com/hyperledger/fabric v1.4.4

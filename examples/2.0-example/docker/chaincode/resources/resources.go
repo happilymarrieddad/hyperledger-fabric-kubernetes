@@ -31,6 +31,14 @@ type Resource struct {
 	ID             string `json:"id"`
 	Name           string `json:"name"`
 	ResourceTypeID string `json:"resource_type_id"`
+	Active         bool   `json:"active"`
+}
+
+// ResourceTransactionItem
+type ResourceTransactionItem struct {
+	TXID      string   `json:"tx_id"`
+	Resource  Resource `json:"resource"`
+	Timestamp int64    `json:"timestamp"`
 }
 
 // InitLedger adds a base set of cars to the ledger
@@ -55,6 +63,7 @@ func (rc *ResourcesContract) Create(ctx contractapi.TransactionContextInterface,
 		ID:             id,
 		Name:           name,
 		ResourceTypeID: resourceTypeID,
+		Active:         true,
 	}
 
 	chainCodeArgs := util.ToChaincodeArgs("Read", resourceTypeID)
@@ -76,7 +85,7 @@ func (rc *ResourcesContract) Create(ctx contractapi.TransactionContextInterface,
 }
 
 // Update changes the value with id in the world state
-func (rc *ResourcesContract) Update(ctx contractapi.TransactionContextInterface, id string, value string) error {
+func (rc *ResourcesContract) Update(ctx contractapi.TransactionContextInterface, id string, name string, resourceTypeID string) error {
 	existing, err := ctx.GetStub().GetState(id)
 
 	if err != nil {
@@ -91,17 +100,11 @@ func (rc *ResourcesContract) Update(ctx contractapi.TransactionContextInterface,
 	if err = json.Unmarshal(existing, &existingResource); err != nil {
 		return fmt.Errorf("Unable to unmarshal existing into object")
 	}
-	var suggestedResource *Resource
-	if err = json.Unmarshal([]byte(value), &suggestedResource); err != nil {
-		return fmt.Errorf("Unable to unmarshal existing into object")
+	if len(name) > 0 {
+		existingResource.Name = name
 	}
-
-	if len(suggestedResource.Name) > 0 {
-		existingResource.Name = suggestedResource.Name
-	}
-
-	if len(suggestedResource.ResourceTypeID) > 0 {
-		existingResource.ResourceTypeID = suggestedResource.ResourceTypeID
+	if len(resourceTypeID) > 0 {
+		existingResource.ResourceTypeID = resourceTypeID
 	}
 
 	newValue, err := json.Marshal(existingResource)
@@ -166,4 +169,36 @@ func (rc *ResourcesContract) Index(
 	}
 
 	return
+}
+
+// Transactions get all the transactions of an id
+func (rc *ResourcesContract) Transactions(
+	ctx contractapi.TransactionContextInterface,
+	id string,
+) ([]*ResourceTransactionItem, error) {
+	historyIface, err := ctx.GetStub().GetHistoryForKey(id)
+	if err != nil {
+		return nil, err
+	}
+
+	var rets []*ResourceTransactionItem
+	for historyIface.HasNext() {
+		val, err := historyIface.Next()
+		if err != nil {
+			return nil, err
+		}
+
+		var res Resource
+		if err = json.Unmarshal(val.Value, &res); err != nil {
+			return nil, err
+		}
+
+		rets = append(rets, &ResourceTransactionItem{
+			TXID:      val.TxId,
+			Timestamp: int64(val.Timestamp.GetNanos()),
+			Resource:  res,
+		})
+	}
+
+	return rets, nil
 }

@@ -17,13 +17,28 @@ const routes = [
   {
     path: '/resources/create',
     name: 'ResourcesCreate',
-    component: () => import(/* webpackChunkName: "resourcesCreate" */ '@/views/resources/Create.vue')
+    component: () => import(/* webpackChunkName: "resourcescreate" */ '@/views/resources/Create.vue')
+  },
+  {
+    path: '/resources/:id',
+    name: 'ResourcesUpdate',
+    component: () => import(/* webpackChunkName: "resourcesedit" */ '@/views/resources/Edit.vue')
   },
   {
     path: '/resource_types',
     name: 'ResourceTypes',
-    component: () => import(/* webpackChunkName: "resourcetypess" */ '@/views/resourcetypes/Index.vue')
+    component: () => import(/* webpackChunkName: "resourcetypes" */ '@/views/resourcetypes/Index.vue')
   },
+  {
+    path: '/resource_types/create',
+    name: 'ResourceTypesCreate',
+    component: () => import(/* webpackChunkName: "resourcetypescreate" */ '@/views/resourcetypes/Create.vue')
+  },
+  {
+    path: '/resource_types/:id',
+    name: 'ResourceTypesUpdate',
+    component: () => import(/* webpackChunkName: "resourcetypesedit" */ '@/views/resourcetypes/Edit.vue')
+  }
 ]
 
 const router = new VueRouter({

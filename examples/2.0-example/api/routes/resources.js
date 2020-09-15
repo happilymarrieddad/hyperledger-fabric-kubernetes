@@ -16,6 +16,23 @@ router.get('/', async (req, res) => {
     res.json(JSON.parse(submitResult.toString()));
 })
 
+router.get('/:id/transactions', async (req, res) => {
+    if (!req || !req.params) {
+        res.status(400).send('resource id required in url parameters');
+        return;
+    }
+
+    mainNetwork = await network.setup();
+
+    const contract = mainNetwork.getContract('resources');
+
+    // Submit transactions for the smart contract
+    const submitResult = await contract.evaluateTransaction('transactions', req.params.id).catch(err => res.status(400).send(err));
+
+    // Remove the unnecessary quotes
+    res.json(JSON.parse(submitResult.toString()));
+})
+
 router.get('/:id', async (req, res) => {
     if (!req || !req.params) {
         res.status(400).send('resource id required in url parameters');
@@ -44,11 +61,15 @@ router.post('/', async (req, res) => {
 
     const contract = mainNetwork.getContract('resources');
 
-    req.body.id = uuid.v4()
+    const newObj = {
+        id: uuid.v4(),
+        name: req.body.name,
+        resource_type_id: req.body.resource_type_id
+    }
 
-    await contract.submitTransaction('create', req.body.id, req.body.name, req.body.resource_type_id).catch(err => res.status(400).send(err));;
+    await contract.submitTransaction('create', newObj.id, newObj.name, newObj.resource_type_id).catch(err => res.status(400).send(err));;
 
-    res.json(req.body);
+    res.json(newObj);
 })
 
 router.put('/:id', async (req, res) => {
@@ -84,6 +105,24 @@ router.put('/:id', async (req, res) => {
     await contract.submitTransaction('update', req.params.id, JSON.stringify(newResource)).catch(err => res.status(400).send(err));;
 
     res.json(newResource);
+})
+
+router.delete('/:id', async (req, res) => {
+    if (!req || !req.params) {
+        res.status(400).send('resource id required in url parameters');
+        return;
+    }
+
+    mainNetwork = await network.setup();
+
+    const contract = mainNetwork.getContract('resources');
+
+    // Submit transactions for the smart contract
+    const submitResult = await contract.evaluateTransaction('delete', [req.params.id]).catch(err => res.status(400).send(err));
+    console.log(submitResult)
+
+    // Remove the unnecessary quotes
+    res.send("success");
 })
 
 module.exports = router;

@@ -21,7 +21,7 @@
                         label="Standard"
                     )
             v-btn(to="/resources") Back
-            v-btn(@click="save") Create
+            v-btn(@click="save") Save
 </template>
 
 <script>
@@ -52,9 +52,9 @@ export default {
         async save() {
             const self = this;
 
-            let [res, err] = await this.$store.dispatch('resources/createOne', {
+            let [res, err] = await this.$store.dispatch('resources/updateOne', {
+                id: self.$route.params.id,
                 name: self.name,
-                resource_type_id: self.resource_type_id,
             });
             if (err) {
                 alert(err);
@@ -63,9 +63,20 @@ export default {
 
             self.$router.push('/resources');
         },
+        async fetchData() {
+            let [res, err] = await this.$store.dispatch('resources/getOne', this.$route.params.id)
+            if (err) {
+                alert(err);
+                return
+            }
+
+            this.name = res.name;
+            this.resource_type_id = res.resource_type_id;
+        }
     },
-    mounted() {
-        this.$store.dispatch('resource_types/getAll')
+    async mounted() {
+        await this.$store.dispatch('resource_types/getAll');
+        this.fetchData();
     }
 }
 </script>

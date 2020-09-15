@@ -13,7 +13,7 @@ export default {
     },
     put(url, id, data) {
         return new Promise((resolve) => {
-            axios.post(`${url}/${id}`,data).then(val => resolve([val.data])).catch(err => resolve([null, err]));
+            axios.put(`${url}/${id}`,data).then(val => resolve([val.data])).catch(err => resolve([null, err]));
         })
     },
     delete(url, id) {

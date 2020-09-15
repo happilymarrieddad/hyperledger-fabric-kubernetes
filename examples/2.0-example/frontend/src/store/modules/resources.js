@@ -8,7 +8,7 @@ export default {
     mutations: {},
     actions: {
         async getAll({ state }) {
-            let [res, err] = await axios.get('http://localhost:4001/resources')
+            let [res, err] = await axios.get('http://localhost:4000/resources')
             if (err) {
                 return [null,err];
             }
@@ -18,7 +18,7 @@ export default {
             return [res];
         },
         async getOne({}, id = 0) {
-            let [res, err] = await axios.get(`http://localhost:4001/resources/${id}`)
+            let [res, err] = await axios.get(`http://localhost:4000/resources/${id}`)
             if (err) {
                 return [null,err];
             }
@@ -26,7 +26,7 @@ export default {
             return [res];
         },
         async createOne({}, newObj) {
-            let [res, err] = await axios.post(`http://localhost:4001/resources`, newObj)
+            let [res, err] = await axios.post(`http://localhost:4000/resources`, newObj)
             if (err) {
                 return [null,err];
             }
@@ -34,7 +34,7 @@ export default {
             return [res];
         },
         async updateOne({}, existingObj) {
-            let [res, err] = await axios.put(`http://localhost:4001/resources`, existingObj.id, existingObj)
+            let [res, err] = await axios.put(`http://localhost:4000/resources`, existingObj.id, existingObj)
             if (err) {
                 return [null,err];
             }
@@ -42,7 +42,15 @@ export default {
             return [res];
         },
         async deleteOne({}, id = 0) {
-            let [res, err] = await axios.delete(`http://localhost:4001/resources/${id}`)
+            let [res, err] = await axios.delete(`http://localhost:4000/resources`, id)
+            if (err) {
+                return [null,err];
+            }
+
+            return [res];
+        },
+        async getTransactions({}, id = 0) {
+            let [res, err] = await axios.get(`http://localhost:4000/resource_types/${id}/transactions`)
             if (err) {
                 return [null,err];
             }
