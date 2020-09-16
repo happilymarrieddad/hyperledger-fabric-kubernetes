@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "MAKE SURE YOU HAVE VENDOR'D THE GO FILES!!! - go mod vendor (inside chaincode folders)"
+sleep 5
+
 docker exec -it cli-peer0-org1 bash -c 'peer channel create -c main -f ./channels/main.tx -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 
 docker exec -it cli-peer0-org1 bash -c 'cp main.block ./channels/'

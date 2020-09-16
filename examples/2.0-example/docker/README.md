@@ -1,6 +1,7 @@
 Symbiosis
 ===========================
-
+## Notes
+MAKE SURE YOU VENDOR THE GO FILES (go mod vendor - inside the chaincode folders)
 
 ## Fabric-CA
 1. docker-compose -f docker-compose-ca.yaml up
@@ -254,6 +255,10 @@ docker exec -it cli-peer0-org2 bash -c 'peer lifecycle chaincode approveformyorg
 
 docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem --channelID main --name resource_types --version 3.0 --sequence 3'
 
+
+
+
+docker exec -it cli-peer1-org2 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer1:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 
 
 ```
