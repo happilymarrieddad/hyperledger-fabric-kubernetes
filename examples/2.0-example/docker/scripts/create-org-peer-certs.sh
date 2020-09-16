@@ -102,6 +102,8 @@ function normalizeMSP {
    cacerts=$mspDir/cacerts
    intcerts=$mspDir/intermediatecerts
    signcerts=$mspDir/signcerts
+   keystorecerts=$mspDir/keystore
+   mv $keystorecerts/* $keystorecerts/pvt-cert.pem
    cacertsfname=$cacerts/ca.${orgName}-cert.pem
    if [ ! -f $cacertsfname ]; then
       mv $cacerts/* $cacertsfname

@@ -275,8 +275,6 @@ wget https://raw.githubusercontent.com/hyperledger/blockchain-explorer/master/do
 cp -r ../crypto-config ./organizations
 ```
 
-You need to change the priv_key (name of the file) in the connection-profile/first-network.json file.
-
 ```bash
 NOTE:
 I would suggest that you create the network without the explorer first and then start it again after.
