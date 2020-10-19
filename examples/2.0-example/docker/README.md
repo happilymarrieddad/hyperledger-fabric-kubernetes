@@ -1,6 +1,7 @@
 Symbiosis
 ===========================
-
+## Notes
+MAKE SURE YOU VENDOR THE GO FILES (go mod vendor - inside the chaincode folders)
 
 ## Fabric-CA
 1. docker-compose -f docker-compose-ca.yaml up
@@ -75,7 +76,7 @@ docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o order
 
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","1","Iron Ore","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode invoke -C main -n resources -c '\''{"Args":["Create","2","Copper Ore","1"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
-
+sleep 5
 docker exec -it cli-peer0-org1 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 docker exec -it cli-peer1-org1 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
 docker exec -it cli-peer0-org2 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer0:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
@@ -256,6 +257,10 @@ docker exec -it cli-peer0-org1 bash -c 'peer lifecycle chaincode commit -o order
 
 
 
+
+docker exec -it cli-peer1-org2 bash -c 'peer chaincode query -C main -n resources -c '\''{"Args":["Index"]}'\'' -o orderer1:7050 --tls --cafile=/etc/hyperledger/orderers/msp/tlscacerts/orderers-ca-7054.pem'
+
+
 ```
 
 
@@ -274,8 +279,6 @@ wget https://raw.githubusercontent.com/hyperledger/blockchain-explorer/master/do
 ```bash
 cp -r ../crypto-config ./organizations
 ```
-
-You need to change the priv_key (name of the file) in the connection-profile/first-network.json file.
 
 ```bash
 NOTE:

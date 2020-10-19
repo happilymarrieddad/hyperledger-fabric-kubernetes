@@ -24,7 +24,7 @@
 		"org1": {
 			"mspid": "org1",
 			"adminPrivateKey": {
-				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/keystore/aa904a17aec65456b486be7da7aada45cd28889efc1d79c71a2788d9b42b1dee_sk"
+				"path": "/tmp/crypto/peerOrganizations/org1/users/Admin@org1/msp/keystore/pvt-cert.pem"
 			},
 			"peers": ["peer0-org1"],
 			"signedCert": {

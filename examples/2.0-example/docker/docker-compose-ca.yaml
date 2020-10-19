@@ -6,7 +6,7 @@ networks:
 services:
   # Servers
   orderers-ca:
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: orderers-ca
     ports:
       - 7054:7054
@@ -22,7 +22,7 @@ services:
     networks:
       - fabric-ca
   org1-ca:
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: org1-ca
     ports:
       - 7055:7054
@@ -38,7 +38,7 @@ services:
     networks:
       - fabric-ca
   org2-ca:
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: org2-ca
     ports:
       - 7056:7054
@@ -56,7 +56,7 @@ services:
   # Clients
   orderers-client:
     tty: true
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: orderers-client
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-client
@@ -78,7 +78,7 @@ services:
       - orderers-ca
   org1-client:
     tty: true
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: org1-client
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-client
@@ -100,7 +100,7 @@ services:
       - org1-ca
   org2-client:
     tty: true
-    image: hyperledger/fabric-ca:1.4.1
+    image: hyperledger/fabric-ca:1.4.7
     container_name: org2-client
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-client

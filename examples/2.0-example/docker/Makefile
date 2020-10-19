@@ -15,6 +15,14 @@ gen_channel_artifacts: set_crypto_perms
 	configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org1anchor.tx -channelID main -asOrg org1
 	configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org2anchor.tx -channelID main -asOrg org2
 
+gen_osx_artifacts:
+	mkdir -p orderer
+	mkdir -p channels
+	~/bin/configtxgen -profile OrdererGenesis -outputBlock ./orderer/genesis.block -channelID system-channel
+	~/bin/configtxgen -profile MainChannel -outputCreateChannelTx ./channels/main.tx -channelID main
+	~/bin/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org1anchor.tx -channelID main -asOrg org1
+	~/bin/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channels/org2anchor.tx -channelID main -asOrg org2
+
 clean:
 	sudo rm -rf state orderer channels
 	mkdir -p state orderer channels
