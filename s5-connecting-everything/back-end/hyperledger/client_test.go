@@ -1,8 +1,8 @@
 package hyperledger
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func Test_ConnectionTest_Success(t *testing.T) {
@@ -22,7 +22,7 @@ func Test_ConnectionTest_Success(t *testing.T) {
 		return
 	}
 
-	res, err := clients.Query("org1", "rawresources", "index", [][]byte{
+	res, err := clients.Query("org1", "mainchannel", "rawresources", "index", [][]byte{
 		[]byte(""),
 		[]byte(""),
 	})

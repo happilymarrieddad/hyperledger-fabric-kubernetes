@@ -3,16 +3,17 @@ package rawresources
 import (
 	"encoding/json"
 	"errors"
-	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
+
 	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/hyperledger"
+	"github.com/happilymarrieddad/hyperledger-fabric-kubernetes/s5-connecting-everything/backend/models"
 )
 
-func Show(clients *hyperledger.Clients,id string) (rawresource *models.RawResource,err error) {
+func Show(clients *hyperledger.Clients, id string) (rawresource *models.RawResource, err error) {
 
 	rawresources := new(models.RawResources)
 
-	res, err := clients.Query("org1", "rawresources", "queryString", [][]byte{
-		[]byte("{\"selector\":{ \"id\": { \"$eq\":\""+id+"\" } }}"),
+	res, err := clients.Query("org1", "mainchannel", "rawresources", "queryString", [][]byte{
+		[]byte("{\"selector\":{ \"id\": { \"$eq\":\"" + id + "\" } }}"),
 	})
 	if err != nil {
 		return

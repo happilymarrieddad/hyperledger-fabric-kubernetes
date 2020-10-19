@@ -26,7 +26,7 @@ type Clients struct {
 }
 
 func (c *Clients) AddClient(user string, org string, channel string) (*orgClient, error) {
-	if val, ok := c.List[org]; ok {
+	if val, ok := c.List[org+channel]; ok {
 		return val, errors.New("client already exists")
 	}
 
@@ -64,25 +64,25 @@ func (c *Clients) AddClient(user string, org string, channel string) (*orgClient
 		return nil, errors.WithMessage(err, "unable to create client from channel context")
 	}
 
-	c.List[org] = &orgClient{
+	c.List[org+channel] = &orgClient{
 		User:          user,
 		Org:           org,
 		ChannelClient: channelClient,
 	}
 
-	return c.List[org], nil
+	return c.List[org+channel], nil
 }
 
-func (c *Clients) GetClient(org string) (*orgClient, error) {
-	if val, ok := c.List[org]; ok {
+func (c *Clients) GetClient(org, channel string) (*orgClient, error) {
+	if val, ok := c.List[org+channel]; ok {
 		return val, nil
 	}
 
 	return nil, errors.New("no client for org " + org)
 }
 
-func (c *Clients) Query(org string, chaincode string, fcn string, args [][]byte) (ret []byte, err error) {
-	client, err := c.GetClient(org)
+func (c *Clients) Query(org string, channel string, chaincode string, fcn string, args [][]byte) (ret []byte, err error) {
+	client, err := c.GetClient(org, channel)
 	if err != nil {
 		return
 	}
@@ -102,8 +102,8 @@ func (c *Clients) Query(org string, chaincode string, fcn string, args [][]byte)
 	return
 }
 
-func (c *Clients) Invoke(org string, chaincode string, fcn string, args [][]byte) (ret []byte, err error) {
-	client, err := c.GetClient(org)
+func (c *Clients) Invoke(org string, channel string, chaincode string, fcn string, args [][]byte) (ret []byte, err error) {
+	client, err := c.GetClient(org, channel)
 	if err != nil {
 		return
 	}
