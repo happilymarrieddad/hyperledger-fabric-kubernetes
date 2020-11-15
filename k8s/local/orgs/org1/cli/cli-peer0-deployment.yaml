@@ -23,8 +23,8 @@ spec:
     spec:
       volumes:
         - name: host-mount
-          hostPath:
-            path: "/host"
+          persistentVolumeClaim:
+            claimName: my-pv-claim
       containers:
         - name: peer0-org1
           image: hyperledger/fabric-tools:1.4.3

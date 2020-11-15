@@ -1,182 +1,170 @@
 Organizations:
-  - &orderer
-    Name: orderer
-    ID: orderer
-    MSPDir: crypto-config/ordererOrganizations/default.svc.cluster.local/msp
-    Policies:
-      Readers:
-        Type: Signature
-        Rule: "OR('orderer.member')"
-      Writers:
-        Type: Signature
-        Rule: "OR('orderer.member')"
-      Admins:
-        Type: Signature
-        Rule: "OR('orderer.admin')"
-
-  - &org1
-    Name: org1
-    ID: org1
-    MSPDir: crypto-config/peerOrganizations/org1/msp
-    Policies:
-      Readers:
-        Type: Signature
-        Rule: "OR('org1.admin', 'org1.peer', 'org1.client', 'org1.member')"
-      Writers:
-        Type: Signature
-        Rule: "OR('org1.admin', 'org1.peer', 'org1.client', 'org1.member')"
-      Admins:
-        Type: Signature
-        Rule: "OR('org1.admin')"
-    AnchorPeers:
-      - Host: peer0-org1-service
-        Port: 7051
-
-  - &org2
-    Name: org2
-    ID: org2
-    MSPDir: crypto-config/peerOrganizations/org2/msp
-    Policies:
-      Readers:
-        Type: Signature
-        Rule: "OR('org2.admin', 'org2.peer', 'org2.client', 'org2.member')"
-      Writers:
-        Type: Signature
-        Rule: "OR('org2.admin', 'org2.peer', 'org2.client', 'org2.member')"
-      Admins:
-        Type: Signature
-        Rule: "OR('org2.admin')"
-    AnchorPeers:
-      - Host: peer0-org2-service
-        Port: 7051
+    - &orderer
+        Name: orderer
+        ID: orderer
+        MSPDir: crypto-config/ordererOrganizations/orderer/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('orderer.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('orderer.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('orderer.admin')"
+    - &org1
+        Name: org1
+        ID: org1
+        MSPDir: crypto-config/peerOrganizations/org1/msp
+        AnchorPeers:
+            - Host: peer0-org1
+              Port: 7051
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('org1.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org1.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org1.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('org1.member')"
+    - &org2
+        Name: org2
+        ID: org2
+        MSPDir: crypto-config/peerOrganizations/org2/msp
+        AnchorPeers:
+            - Host: peer0-org2
+              Port: 9051
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('org2.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('org2.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('org2.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('org2.member')"
 
 Capabilities:
-  Channel: &ChannelCapabilities
-    V1_4_3: true
-
-  Orderer: &OrdererCapabilities
-    V1_4_2: true
-
-  Application: &ApplicationCapabilities
-    V1_4_2: true
+    Global: &ChannelCapabilities
+        V2_0: true
+    Orderer: &OrdererCapabilities
+        V2_0: true
+    Application: &ApplicationCapabilities
+        V2_0: true
 
 Application: &ApplicationDefaults
-  Organizations:
-    - *orderer
-    - *org1
-    - *org2
-
-  Policies:
-    Readers:
-      Type: ImplicitMeta
-      Rule: "ANY Readers"
-    Writers:
-      Type: ImplicitMeta
-      Rule: "ANY Writers"
-    Admins:
-      Type: ImplicitMeta
-      Rule: "ANY Admins"
-    BlockValidation:
-      Type: ImplicitMeta
-      Rule: "ANY Writers"
-
-  Capabilities:
-    <<: *ApplicationCapabilities
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        LifecycleEndorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Endorsement"
+        Endorsement:
+            Type: ImplicitMeta
+            Rule: "ANY Endorsement"
+    Capabilities:
+        <<: *ApplicationCapabilities
 
 Orderer: &OrdererDefaults
-
-  OrdererType: etcdraft
-  EtcdRaft:
-    Consenters:
-      - Host: orderer0-service
-        Port: 7050
-        ClientTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer0.default.svc.cluster.local/tls/server.crt
-        ServerTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer0.default.svc.cluster.local/tls/server.crt
-      - Host: orderer1-service
-        Port: 7050
-        ClientTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.crt
-        ServerTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.crt
-      - Host: orderer2-service
-        Port: 7050
-        ClientTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/tls/server.crt
-        ServerTLSCert: crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer2.default.svc.cluster.local/tls/server.crt
-  Addresses:
-    - orderer0-service:7050
-    - orderer1-service:7050
-    - orderer2-service:7050
-  
-  BatchTimeout: 1s
-  BatchSize:
-    MaxMessageCount: 10
-    AbsoluteMaxBytes: 99 MB
-    PreferredMaxBytes: 512 KB
-
-  Kafka:
-    Brokers:
-      - 127.0.0.1:9092
-  
-  Organizations:
-    - *orderer
-  
-  Policies:
-    Readers:
-      Type: ImplicitMeta
-      Rule: "ANY Readers"
-    Writers:
-      Type: ImplicitMeta
-      Rule: "ANY Writers"
-    Admins:
-      Type: ImplicitMeta
-      Rule: "MAJORITY Admins"
-    BlockValidation:
-      Type: ImplicitMeta
-      Rule: "ANY Writers"
+    OrdererType: etcdraft
+    EtcdRaft:
+        Consenters:
+            - Host: orderer0
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer0/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer0/tls/server.crt
+            - Host: orderer1
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer1/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer1/tls/server.crt
+            - Host: orderer2
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer2/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/orderer/orderers/orderer2/tls/server.crt
+    Addresses:
+        - orderer0:7050
+        - orderer1:7050
+        - orderer2:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+        - *orderer
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
 
 Channel: &ChannelDefaults
-
-  Policies:
-    Readers:
-      Type: ImplicitMeta
-      Rule: "ANY Readers"
-    Writers:
-      Type: ImplicitMeta
-      Rule: "ANY Writers"
-    Admins:
-      Type: ImplicitMeta
-      Rule: "MAJORITY Admins"
-
-  Capabilities:
-    <<: *ChannelCapabilities
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
 
 Profiles:
-
-  OrdererGenesis:
-    <<: *ChannelDefaults
-    Capabilities:
-      <<: *ChannelCapabilities
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-        - *orderer
-      Capabilities:
-        <<: *OrdererCapabilities
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - <<: *orderer
-    Consortiums:
-      MAIN:
-        Organizations:
-          - *org1
-          - *org2
-
-  MainChannel:
-    <<: *ChannelDefaults
-    Consortium: MAIN
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - *org1
-        - *org2
-      Capabilities:
-        <<: *ApplicationCapabilities
+    OrdererGenesis:
+        <<: *ChannelDefaults
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *orderer
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            MAIN:
+                Organizations:
+                    - *org1
+                    - *org2
+    
+    MainChannel:
+        Consortium: MAIN
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *org1
+                - *org2
+            Capabilities:
+                <<: *ApplicationCapabilities

@@ -20,8 +20,8 @@ spec:
     spec:
       volumes:
         - name: host-mount
-          hostPath:
-            path: "/host"
+          persistentVolumeClaim:
+            claimName: my-pv-claim
       containers:
         - name: orderer2
           image: hyperledger/fabric-orderer:1.4.3

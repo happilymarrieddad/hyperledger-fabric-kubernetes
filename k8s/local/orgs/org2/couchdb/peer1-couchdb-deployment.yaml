@@ -23,8 +23,8 @@ spec:
     spec:
       volumes:
         - name: host-mount
-          hostPath:
-            path: "/host"
+          persistentVolumeClaim:
+            claimName: my-pv-claim
       containers:
         - name: peer1-org2-couchdb
           image: couchdb:2.3.1
