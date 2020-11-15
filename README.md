@@ -51,11 +51,11 @@ kops delete cluster hyperledger.k8s.local
 
 # Commands to copy over files to kubernetes storage
 
-kubectl cp ./s5-connecting-everything/scripts ca-client-deployment-768886cfc6-9qhpb:/
-kubectl cp ./config.yaml ca-client-deployment-768886cfc6-9qhpb:/files
-kubectl cp ./s5-connecting-everything/chaincode/rawresources ca-client-deployment-768886cfc6-9qhpb:/scripts/chaincode/rawresources
-kubectl cp ./s5-connecting-everything/configtx.yaml ca-client-deployment-768886cfc6-9qhpb:/scripts
-kubectl cp ./bin ca-client-deployment-768886cfc6-9qhpb:/scripts
+kubectl cp ./s5-connecting-everything/scripts $(kubectl get pods -o=name | grep ca-client-deployment | sed "s/^.\{4\}//"):/
+kubectl cp ./config.yaml $(kubectl get pods -o=name | grep ca-client-deployment | sed "s/^.\{4\}//"):/files
+kubectl cp ./s5-connecting-everything/chaincode/rawresources $(kubectl get pods -o=name | grep ca-client-deployment | sed "s/^.\{4\}//"):/scripts/chaincode
+kubectl cp ./configtx.yaml $(kubectl get pods -o=name | grep ca-client-deployment | sed "s/^.\{4\}//"):/scripts
+kubectl cp ./bin $(kubectl get pods -o=name | grep ca-client-deployment | sed "s/^.\{4\}//"):/scripts
 
 
 # Adding nginx to our network
