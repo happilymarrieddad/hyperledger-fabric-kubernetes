@@ -19,7 +19,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "~5.0.8",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-pug": "~1.0.7",
